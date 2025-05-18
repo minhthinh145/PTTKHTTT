@@ -1,0 +1,6 @@
+@QLDangKyHocPhan_HostAddress = http://localhost:5143
+
+GET {{QLDangKyHocPhan_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

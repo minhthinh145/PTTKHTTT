@@ -1,0 +1,37 @@
+# Bỏ thư mục build của .NET
+bin/
+obj/
+*.user
+*.suo
+
+# Thư viện cài qua NuGet
+packages/
+*.nupkg
+
+# File cấu hình nhạy cảm
+appsettings.json
+appsettings.*.json
+secrets.json
+
+# VSCode
+.vscode/
+
+# Visual Studio
+*.vs/
+*.dbmdl
+*.pidb
+
+# Node.js (cho front-end)
+node_modules/
+dist/
+build/
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db
+
+# Log files
+*.log
+
+# Others
+.env

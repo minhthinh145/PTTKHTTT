@@ -1,0 +1,110 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using QLDangKyHocPhan.DTOs.AuthDTOs;
+using QLDangKyHocPhan.Services.Interface;
+using System.Security.Claims;
+
+namespace QLDangKyHocPhan.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthController : ControllerBase
+    {
+        private readonly IAccountService _accountService;
+        private readonly IAuthService _authService;
+
+        public AuthController(IAccountService accountService, IAuthService authService)
+        {
+            _accountService = accountService;
+            _authService = authService;
+        }
+        [HttpPost("signin")]
+        public async Task<IActionResult> SignIn([FromBody] SignInDTO signIn)
+        {
+            var userId = GetUserIdByToken();
+            if (userId == null) { 
+                return BadRequest(new { message = "User ID not found in claims." });
+            }
+            var result = await _accountService.SignInAsync(signIn, userId);
+            if (result == null)
+            {
+                return Unauthorized(new { message = "Invalid email or password." });
+            }
+
+            return Ok(result);
+        }
+
+        [HttpGet("profile")]
+        [Authorize]
+        public async Task<IActionResult> GetProfile()
+        {
+            try
+            {
+                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Unauthorized(new { message = "Invalid token." });
+                }
+
+                var userProfile = await _accountService.FindUserById(userId);
+                if (userProfile == null)
+                {
+                    return NotFound(new { message = "User not found." });
+                }
+
+                return Ok(userProfile);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(500, new { message = "An error occurred while retrieving the profile.", error = ex.Message });
+            }
+        }
+
+
+        [HttpPatch("update")]
+        public async Task<IActionResult> UpdateUser([FromBody] UserProfileDTO user)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest(new { message = "Invalid token." });
+            }
+            var userUpdate = await _accountService.UpdateUserById(userId, user);
+            if (userUpdate == null)
+            {
+                return BadRequest(new { message = "Cannot update user" });
+            }
+            return Ok(new { message = "Cập nhật thông tin thành công" }); 
+        }
+
+        [HttpPost("checkpassword")]
+        public async Task<IActionResult> CheckPasswordUser([FromBody] string password)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return BadRequest(new { message = "Invalid token." });
+            }
+            var result = await _accountService.CheckPasswordAsync(userId, password);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+        private  string GetUserIdByToken()
+        {
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null)
+            {
+                return userIdClaim.Value;
+            }
+            else
+            {
+                throw new Exception("User ID not found in claims.");
+            }
+        }
+    }
+}
