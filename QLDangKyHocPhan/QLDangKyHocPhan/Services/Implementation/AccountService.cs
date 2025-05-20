@@ -49,9 +49,9 @@ namespace QLDangKyHocPhan.Services.Implementation
             return _mapper.Map<UserProfileDTO>(user);
         }
 
-        public async Task<TokenResponseDTO?> SignInAsync(SignInDTO signin, string userId)
+        public async Task<TokenResponseDTO?> SignInAsync(SignInDTO signin)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(signin.TenDangNhap);
             if (user == null)
             {
                 return null;
@@ -66,6 +66,25 @@ namespace QLDangKyHocPhan.Services.Implementation
             return tokenData;
         }
 
+        public async Task<IdentityResult> SignUpAsync(SignUpDTO signup)
+        {
+           var user = new Taikhoan
+           {
+               Id = signup.TenDangNhap,
+               TenDangNhap = signup.TenDangNhap,
+               UserName = signup.Username,
+               Email = signup.Email,
+               PhoneNumber = signup.PhoneNumber,
+               DateOfBirth = signup.DateOfBirth,
+               LoaiTaiKhoan = signup.LoaiTaiKhoan ?? "SinhVien",
+           };
+            var result = await _userManager.CreateAsync(user, signup.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, signup.LoaiTaiKhoan);
+            }
+            return result;
+        }
 
         public async Task<UserProfileDTO> UpdateUserById(string userid, UserProfileDTO user)
         {
