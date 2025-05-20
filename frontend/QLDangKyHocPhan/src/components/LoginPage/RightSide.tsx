@@ -22,7 +22,7 @@ export const RightSide = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-[#e8f4f8] px-10 py-6">
+    <div className="flex-1 flex flex-col bg-[#effafd] px-10 py-6 mt-10">
       {/* Header trên cùng */}
       <div className="mb-6 text-center">
         <h2 className="text-xl ">TRƯỜNG ĐẠI HỌC ABCD</h2>
