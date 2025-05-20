@@ -9,7 +9,7 @@ export const PasswordField = ({ value, onChange }: Props) => {
       <input
         id="password"
         type="password"
-        placeholder="Mật khẩu"
+        placeholder=" "
         value={value}
         onChange={onChange}
         className="peer block w-full rounded-lg border-2 border-blue-800  px-4 pt-6 pb-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
