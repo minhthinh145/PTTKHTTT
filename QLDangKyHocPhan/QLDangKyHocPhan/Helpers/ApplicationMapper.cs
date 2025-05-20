@@ -9,6 +9,7 @@ namespace QLDangKyHocPhan.Helpers
         public ApplicationMapper()
         {
             CreateMap<Taikhoan, UserProfileDTO>().ReverseMap();
+
         }
     }
 }

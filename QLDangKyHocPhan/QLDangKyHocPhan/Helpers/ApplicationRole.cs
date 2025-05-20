@@ -6,5 +6,6 @@
         public const string SinhVien = "SinhVien";
         public const string GiangVien = "GiangVien";
         public const string PhongDaoTao = "PhongDaoTao";
+        
     }
 }

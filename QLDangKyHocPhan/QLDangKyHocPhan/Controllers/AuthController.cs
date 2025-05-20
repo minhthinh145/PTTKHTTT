@@ -22,14 +22,11 @@ namespace QLDangKyHocPhan.Controllers
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromBody] SignInDTO signIn)
         {
-            var userId = GetUserIdByToken();
-            if (userId == null) { 
-                return BadRequest(new { message = "User ID not found in claims." });
-            }
-            var result = await _accountService.SignInAsync(signIn, userId);
+
+            var result = await _accountService.SignInAsync(signIn);
             if (result == null)
             {
-                return Unauthorized(new { message = "Invalid email or password." });
+                return Unauthorized(new { message = "Tên đăng nhập không hợp lệ hoặc sai mật khẩu." });
             }
 
             return Ok(result);
