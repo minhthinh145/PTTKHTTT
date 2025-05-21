@@ -85,6 +85,8 @@ try
         options.Password.RequireUppercase = true;
         options.Password.RequireNonAlphanumeric = false;
         options.Password.RequiredUniqueChars = 1;
+        options.User.AllowedUserNameCharacters =
+     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+ áàảãạăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ";
     })
     .AddEntityFrameworkStores<QlDangKyHocPhanContext>()
     .AddDefaultTokenProviders();
@@ -94,8 +96,9 @@ try
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IUserImportService, UserImportService>();
     builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+    builder.Services.AddScoped<ISinhVienRepository, SinhVienRepository>();
     builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-
+    builder.Services.AddScoped<ISinhVienService, SinhVienService>();
     // Cấu hình giới hạn file upload
     builder.Services.Configure<FormOptions>(options =>
     {
