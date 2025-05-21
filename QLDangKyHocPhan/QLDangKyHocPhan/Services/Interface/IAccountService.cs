@@ -37,6 +37,13 @@ namespace QLDangKyHocPhan.Services.Interface
         Task<UserProfileDTO> FindUserById(string userID);
 
         /// <summary>
+        /// get profile user by userdto
+        /// </summary>
+        /// <param name="userProfile">Information of user</param>
+        /// <returns>Serviceresult</returns>
+        Task<ServiceResult> GetProfileByUserAccount(UserProfileDTO userProfile);
+
+        /// <summary>
         /// Update a user 
         /// </summary>
         /// <param name="userid">User id</param>

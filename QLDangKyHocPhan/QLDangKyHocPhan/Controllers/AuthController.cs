@@ -44,13 +44,13 @@ namespace QLDangKyHocPhan.Controllers
                     return Unauthorized(new { message = "Invalid token." });
                 }
 
-                var userProfile = await _accountService.FindUserById(userId);
-                if (userProfile == null)
+                var userDTO = await _accountService.FindUserById(userId);
+                if (userDTO == null)
                 {
                     return NotFound(new { message = "User not found." });
                 }
-
-                return Ok(userProfile);
+                var response = await _accountService.GetProfileByUserAccount(userDTO);
+                return Ok(response);
             }
             catch (Exception ex)
             {

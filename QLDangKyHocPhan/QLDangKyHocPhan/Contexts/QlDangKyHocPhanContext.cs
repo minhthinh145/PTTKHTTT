@@ -29,6 +29,10 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
     public virtual DbSet<Sinhvien> Sinhviens { get; set; }
 
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    public virtual DbSet<CTDAOTAO> CTDAOTAOs { get; set; }
+
+    public virtual DbSet<CHITIET_CTDT> CHITIET_CTDTs { get; set; }
     public DbSet<DangKy> DangKys { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -73,6 +77,17 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
         {
             entity.ToTable(name: "TAIKHOAN_TOKEN");
         });
+
+        modelBuilder.Entity<Taikhoan>()
+    .HasOne(t => t.Sinhvien)
+    .WithOne(sv => sv.TaiKhoan)
+    .HasForeignKey<Sinhvien>(sv => sv.TaiKhoanId);
+
+        modelBuilder.Entity<Taikhoan>()
+            .HasOne(t => t.Giangvien)
+            .WithOne(gv => gv.TaiKhoan)
+            .HasForeignKey<Giangvien>(gv => gv.TaiKhoanId);
+
         modelBuilder.Entity<Giangvien>(entity =>
         {
             entity.HasKey(e => e.MaGiangVien);
@@ -82,11 +97,13 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.HoTen).HasMaxLength(100);
             entity.Property(e => e.LopHoc).HasMaxLength(50);
-            entity.Property(e => e.TaiKhoanDangKy).HasMaxLength(450);
+            entity.Property(e => e.TaiKhoanId).HasMaxLength(450);
 
-            entity.HasOne(d => d.TaiKhoanDangKyNavigation).WithMany(p => p.Giangviens)
-                .HasForeignKey(d => d.TaiKhoanDangKy);
+            entity.HasOne(d => d.TaiKhoan)
+                  .WithOne(p => p.Giangvien)
+                  .HasForeignKey<Giangvien>(d => d.TaiKhoanId);
         });
+
 
         modelBuilder.Entity<DangKy>()
     .HasOne(d => d.SinhVien)
@@ -98,6 +115,62 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
             .WithMany()
             .HasForeignKey(d => d.MaLopHP);
 
+        modelBuilder.Entity<CTDAOTAO>(entity =>
+        {
+            entity.HasKey(e => e.MaCT);
+
+            entity.ToTable("CTDAOTAO");
+
+            entity.Property(e => e.MaCT)
+                  .HasMaxLength(10)
+                  .IsRequired();
+
+            entity.Property(e => e.MaKhoa)
+                  .HasMaxLength(10)
+                  .IsRequired();
+
+            entity.Property(e => e.NamHoc)
+                  .HasMaxLength(9)
+                  .IsRequired();
+
+            entity.HasOne(e => e.Khoa)
+                  .WithMany(k => k.CTDAOTAOs) // Giả sử Khoa có nhiều CTDAOTAO
+                  .HasForeignKey(e => e.MaKhoa)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany(e => e.ChiTietCtdts)
+                  .WithOne(ct => ct.CTDAOTAO)
+                  .HasForeignKey(ct => ct.MaCT);
+        });
+
+        modelBuilder.Entity<CHITIET_CTDT>(entity =>
+        {
+            entity.HasKey(e => e.MaCT_CTDT);
+
+            entity.ToTable("CHITIET_CTDT");
+
+            entity.Property(e => e.MaCT_CTDT)
+                  .HasMaxLength(10)
+                  .IsRequired();
+
+            entity.Property(e => e.MaCT)
+                  .HasMaxLength(10)
+                  .IsRequired();
+
+            entity.Property(e => e.MaHocPhan)
+                  .HasMaxLength(10)
+                  .IsRequired();
+
+            entity.HasOne(e => e.CTDAOTAO)
+                  .WithMany(ct => ct.ChiTietCtdts)
+                  .HasForeignKey(e => e.MaCT)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne(e => e.Hocphan)
+                  .WithMany(h => h.ChiTietCtdts) // Thêm collection này vào Hocphan nếu cần
+                  .HasForeignKey(e => e.MaHocPhan)
+                  .OnDelete(DeleteBehavior.Restrict);
+        });
 
         modelBuilder.Entity<Hocphan>(entity =>
         {
@@ -105,12 +178,37 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
 
             entity.ToTable("HOCPHAN");
 
-            entity.Property(e => e.MaHocPhan).HasMaxLength(10);
-            entity.Property(e => e.DkthucHanh)
-                .HasMaxLength(50)
-                .HasColumnName("DKThucHanh");
-            entity.Property(e => e.SoTc).HasColumnName("SoTC");
-            entity.Property(e => e.TenHocPhan).HasMaxLength(100);
+            entity.Property(e => e.MaHocPhan)
+                  .HasMaxLength(10)
+                  .IsRequired();
+
+            entity.Property(e => e.TenHocPhan)
+                  .HasMaxLength(100);
+
+            entity.Property(e => e.DKTienQuyet)
+                  .HasMaxLength(50)
+                  .HasColumnName("DKTienQuyet");
+
+            entity.Property(e => e.SoTc)
+                  .HasColumnName("SoTC");
+
+            entity.Property(e => e.MaKhoa)
+                  .HasMaxLength(10);
+
+            entity.Property(e => e.HocKy);
+
+            entity.HasOne(e => e.Khoa)
+                  .WithMany(k => k.Hocphans)
+                  .HasForeignKey(e => e.MaKhoa)
+                  .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasMany(e => e.Lophocphans)
+                  .WithOne(l => l.Hocphan)
+                  .HasForeignKey(l => l.MaHocPhan);
+
+            entity.HasMany(e => e.ChiTietCtdts) // Thêm mối quan hệ với CHITIET_CTDT
+                  .WithOne(ct => ct.Hocphan)
+                  .HasForeignKey(ct => ct.MaHocPhan);
         });
 
         modelBuilder.Entity<Khoa>(entity =>
@@ -147,19 +245,27 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
         {
             entity.HasKey(e => e.MaSinhVien);
 
-            entity.Property(e => e.MaSinhVien).HasMaxLength(10);
+            entity.Property(e => e.MaSinhVien).HasMaxLength(20);
             entity.Property(e => e.Email).HasMaxLength(100);
             entity.Property(e => e.GioiTinh).HasMaxLength(10);
             entity.Property(e => e.HoTen).HasMaxLength(100);
             entity.Property(e => e.MaKhoa).HasMaxLength(10);
             entity.Property(e => e.TaiKhoanId).HasMaxLength(450);
 
-            entity.HasOne(d => d.MaKhoaNavigation).WithMany(p => p.Sinhviens)
-                .HasForeignKey(d => d.MaKhoa);
+            entity.HasOne(d => d.MaKhoaNavigation)
+                  .WithMany(p => p.Sinhviens)
+                  .HasForeignKey(d => d.MaKhoa);
 
-            entity.HasOne(d => d.TaiKhoan).WithMany(p => p.Sinhviens)
-                .HasForeignKey(d => d.TaiKhoanId);
+            entity.HasOne(d => d.TaiKhoan)
+                  .WithOne(p => p.Sinhvien)
+                  .HasForeignKey<Sinhvien>(d => d.TaiKhoanId);
+
+            entity.HasOne(s => s.CTDaoTao)
+                  .WithMany(ct => ct.SinhViens)
+                  .HasForeignKey(s => s.MaCT)
+                  .OnDelete(DeleteBehavior.Restrict);
         });
+
 
         modelBuilder.Entity<RefreshToken>(entity =>
         {

@@ -6,6 +6,7 @@ namespace QLDangKyHocPhan.DTOs.AuthDTOs
     {
         [Required]
         public string TenDangNhap { get; set; }
+
         [Required]
         public string Password { get; set; } = string.Empty;
     }
