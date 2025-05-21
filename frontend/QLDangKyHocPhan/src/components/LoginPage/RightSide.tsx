@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useSignIn } from "../../hooks/useSignIn";
 import { LoginButton } from "./LoginButton";
 import { PasswordField } from "./PasswordField";
-import { ShowPasswordButton } from "./ShowPassword";
 import { UsernameField } from "./UserNameField";
 import { useNavigate } from "react-router-dom";
 
@@ -14,7 +13,8 @@ export const RightSide = () => {
 
   const handleLogin = async () => {
     const result = await signIn({ tenDangNhap: username, password });
-    console.log("SignIn result:", result); // 🔍 Log kết quả API
+    console.log("SignIn result:", result);
+    navigate("/login");
     if (result.status === 200) {
       // TODO: handle success (e.g., navigate to dashboard)
       console.log("Login successful:", result.data);
@@ -33,7 +33,7 @@ export const RightSide = () => {
       </div>
 
       {/* Phần form, bọc trong div bg trắng, bo góc, padding */}
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-md">
+      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-md border border-gray-50 hover:border-black transition-all">
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold text-red-500">ĐĂNG NHẬP</h1>
           <p className="text-sm">Cổng đăng ký học phần</p>
@@ -47,7 +47,6 @@ export const RightSide = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <ShowPasswordButton />
 
         <LoginButton onClick={handleLogin} disabled={loading} />
 

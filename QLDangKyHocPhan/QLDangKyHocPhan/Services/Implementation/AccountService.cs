@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using QLDangKyHocPhan.DTOs;
 using QLDangKyHocPhan.DTOs.AuthDTOs;
 using QLDangKyHocPhan.Helpers;
 using QLDangKyHocPhan.Models;
@@ -13,12 +14,14 @@ namespace QLDangKyHocPhan.Services.Implementation
         private readonly UserManager<Taikhoan> _userManager;
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
+        private readonly ISinhVienService _sinhVien;
 
-        public AccountService(UserManager<Taikhoan> userManager , IMapper mapper , IAuthService authService)
+        public AccountService(UserManager<Taikhoan> userManager , IMapper mapper , IAuthService authService , ISinhVienService sinhVien)
         {
             _userManager = userManager;
             _mapper = mapper;
             _authService = authService;
+            _sinhVien = sinhVien;
         }
 
         public async Task<ServiceResult> CheckPasswordAsync(string userId, string password)
@@ -47,6 +50,16 @@ namespace QLDangKyHocPhan.Services.Implementation
                 return null!;
             }
             return _mapper.Map<UserProfileDTO>(user);
+        }
+
+        public async Task<ServiceResult> GetProfileByUserAccount(UserProfileDTO userProfile)
+        {
+           if(userProfile.LoaiTaiKhoan == "SinhVien")
+            {
+                var result = await _sinhVien.GetSinhVienByIdAsync(userProfile.TenDangNhap);
+                return result;
+            }
+            return ServiceResult.Failure("Không tìm thấy thông tin người dùng");
         }
 
         public async Task<TokenResponseDTO?> SignInAsync(SignInDTO signin)

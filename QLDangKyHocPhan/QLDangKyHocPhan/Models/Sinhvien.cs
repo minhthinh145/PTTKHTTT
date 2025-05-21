@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace QLDangKyHocPhan.Models;
 
@@ -14,5 +15,9 @@ public partial class Sinhvien
     public virtual Khoa MaKhoaNavigation { get; set; }
     public string TaiKhoanId { get; set; }
     public virtual Taikhoan TaiKhoan { get; set; }
+
+    [ForeignKey("CTDaoTao")]
+    public string MaCT { get; set; }
+    public virtual CTDAOTAO CTDaoTao { get; set; }
 }
 

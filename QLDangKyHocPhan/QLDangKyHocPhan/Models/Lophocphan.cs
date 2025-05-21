@@ -20,4 +20,5 @@ public partial class Lophocphan
     public virtual Giangvien? MaGiangVienNavigation { get; set; }
 
     public virtual Hocphan? MaHocPhanNavigation { get; set; }
+    public virtual Hocphan Hocphan { get; set; } = null!; // Thêm mối quan hệ với Hocphan
 }

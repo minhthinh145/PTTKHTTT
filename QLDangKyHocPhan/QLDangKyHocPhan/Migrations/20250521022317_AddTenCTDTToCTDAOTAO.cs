@@ -1,20 +1,20 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace QLDangKyHocPhan.Migrations
 {
     /// <inheritdoc />
-    public partial class addDateOfBirth : Migration
+    public partial class AddTenCTDTToCTDAOTAO : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateOfBirth",
-                table: "TAIKHOAN",
-                type: "datetime2",
+            migrationBuilder.AddColumn<string>(
+                name: "TenCTDT",
+                table: "CTDAOTAO",
+                type: "nvarchar(50)",
+                maxLength: 50,
                 nullable: true);
         }
 
@@ -22,8 +22,8 @@ namespace QLDangKyHocPhan.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "DateOfBirth",
-                table: "TAIKHOAN");
+                name: "TenCTDT",
+                table: "CTDAOTAO");
         }
     }
 }

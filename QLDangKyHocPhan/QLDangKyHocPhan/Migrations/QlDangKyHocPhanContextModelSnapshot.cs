@@ -155,6 +155,58 @@ namespace QLDangKyHocPhan.Migrations
                     b.ToTable("TAIKHOAN_TOKEN", (string)null);
                 });
 
+            modelBuilder.Entity("QLDangKyHocPhan.Models.CHITIET_CTDT", b =>
+                {
+                    b.Property<string>("MaCT_CTDT")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("MaCT")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("MaHocPhan")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("MaCT_CTDT");
+
+                    b.HasIndex("MaCT");
+
+                    b.HasIndex("MaHocPhan");
+
+                    b.ToTable("CHITIET_CTDT", (string)null);
+                });
+
+            modelBuilder.Entity("QLDangKyHocPhan.Models.CTDAOTAO", b =>
+                {
+                    b.Property<string>("MaCT")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("MaKhoa")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("NamHoc")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
+                    b.Property<string>("TenCTDT")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("MaCT");
+
+                    b.HasIndex("MaKhoa");
+
+                    b.ToTable("CTDAOTAO", (string)null);
+                });
+
             modelBuilder.Entity("QLDangKyHocPhan.Models.Giangvien", b =>
                 {
                     b.Property<string>("MaGiangVien")
@@ -181,14 +233,15 @@ namespace QLDangKyHocPhan.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("TaiKhoanDangKy")
+                    b.Property<string>("TaiKhoanId")
                         .IsRequired()
                         .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("MaGiangVien");
 
-                    b.HasIndex("TaiKhoanDangKy");
+                    b.HasIndex("TaiKhoanId")
+                        .IsUnique();
 
                     b.ToTable("Giangviens");
                 });
@@ -199,10 +252,21 @@ namespace QLDangKyHocPhan.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("DkthucHanh")
+                    b.Property<string>("DKTienQuyet")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
-                        .HasColumnName("DKThucHanh");
+                        .HasColumnName("DKTienQuyet");
+
+                    b.Property<int?>("HocKy")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LoaiHocPhan")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MaKhoa")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<int?>("SoTc")
                         .HasColumnType("int")
@@ -214,6 +278,8 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.HasKey("MaHocPhan")
                         .HasName("PK__HOCPHAN__9A13F25E14D4648A");
+
+                    b.HasIndex("MaKhoa");
 
                     b.ToTable("HOCPHAN", (string)null);
                 });
@@ -271,6 +337,8 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.HasIndex("MaGiangVien");
 
+                    b.HasIndex("MaHocPhan");
+
                     b.HasIndex("MaHocPhanNavigationMaHocPhan");
 
                     b.ToTable("LOPHOCPHAN", (string)null);
@@ -314,8 +382,8 @@ namespace QLDangKyHocPhan.Migrations
             modelBuilder.Entity("QLDangKyHocPhan.Models.Sinhvien", b =>
                 {
                     b.Property<string>("MaSinhVien")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -332,6 +400,10 @@ namespace QLDangKyHocPhan.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("MaCT")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("MaKhoa")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -347,9 +419,12 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.HasKey("MaSinhVien");
 
+                    b.HasIndex("MaCT");
+
                     b.HasIndex("MaKhoa");
 
-                    b.HasIndex("TaiKhoanId");
+                    b.HasIndex("TaiKhoanId")
+                        .IsUnique();
 
                     b.ToTable("Sinhviens");
                 });
@@ -449,7 +524,7 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.Property<string>("MaSinhVien")
                         .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("NgayThucHien")
                         .HasColumnType("datetime2");
@@ -514,15 +589,55 @@ namespace QLDangKyHocPhan.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("QLDangKyHocPhan.Models.CHITIET_CTDT", b =>
+                {
+                    b.HasOne("QLDangKyHocPhan.Models.CTDAOTAO", "CTDAOTAO")
+                        .WithMany("ChiTietCtdts")
+                        .HasForeignKey("MaCT")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QLDangKyHocPhan.Models.Hocphan", "Hocphan")
+                        .WithMany("ChiTietCtdts")
+                        .HasForeignKey("MaHocPhan")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CTDAOTAO");
+
+                    b.Navigation("Hocphan");
+                });
+
+            modelBuilder.Entity("QLDangKyHocPhan.Models.CTDAOTAO", b =>
+                {
+                    b.HasOne("QLDangKyHocPhan.Models.Khoa", "Khoa")
+                        .WithMany("CTDAOTAOs")
+                        .HasForeignKey("MaKhoa")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Khoa");
+                });
+
             modelBuilder.Entity("QLDangKyHocPhan.Models.Giangvien", b =>
                 {
-                    b.HasOne("QLDangKyHocPhan.Models.Taikhoan", "TaiKhoanDangKyNavigation")
-                        .WithMany("Giangviens")
-                        .HasForeignKey("TaiKhoanDangKy")
+                    b.HasOne("QLDangKyHocPhan.Models.Taikhoan", "TaiKhoan")
+                        .WithOne("Giangvien")
+                        .HasForeignKey("QLDangKyHocPhan.Models.Giangvien", "TaiKhoanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("TaiKhoanDangKyNavigation");
+                    b.Navigation("TaiKhoan");
+                });
+
+            modelBuilder.Entity("QLDangKyHocPhan.Models.Hocphan", b =>
+                {
+                    b.HasOne("QLDangKyHocPhan.Models.Khoa", "Khoa")
+                        .WithMany("Hocphans")
+                        .HasForeignKey("MaKhoa")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Khoa");
                 });
 
             modelBuilder.Entity("QLDangKyHocPhan.Models.Lophocphan", b =>
@@ -532,9 +647,15 @@ namespace QLDangKyHocPhan.Migrations
                         .HasForeignKey("MaGiangVien")
                         .HasConstraintName("FK__LOPHOCPHA__MaGia__5BE2A6F2");
 
-                    b.HasOne("QLDangKyHocPhan.Models.Hocphan", "MaHocPhanNavigation")
+                    b.HasOne("QLDangKyHocPhan.Models.Hocphan", "Hocphan")
                         .WithMany("Lophocphans")
+                        .HasForeignKey("MaHocPhan");
+
+                    b.HasOne("QLDangKyHocPhan.Models.Hocphan", "MaHocPhanNavigation")
+                        .WithMany()
                         .HasForeignKey("MaHocPhanNavigationMaHocPhan");
+
+                    b.Navigation("Hocphan");
 
                     b.Navigation("MaGiangVienNavigation");
 
@@ -554,6 +675,12 @@ namespace QLDangKyHocPhan.Migrations
 
             modelBuilder.Entity("QLDangKyHocPhan.Models.Sinhvien", b =>
                 {
+                    b.HasOne("QLDangKyHocPhan.Models.CTDAOTAO", "CTDaoTao")
+                        .WithMany("SinhViens")
+                        .HasForeignKey("MaCT")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("QLDangKyHocPhan.Models.Khoa", "MaKhoaNavigation")
                         .WithMany("Sinhviens")
                         .HasForeignKey("MaKhoa")
@@ -561,10 +688,12 @@ namespace QLDangKyHocPhan.Migrations
                         .IsRequired();
 
                     b.HasOne("QLDangKyHocPhan.Models.Taikhoan", "TaiKhoan")
-                        .WithMany("Sinhviens")
-                        .HasForeignKey("TaiKhoanId")
+                        .WithOne("Sinhvien")
+                        .HasForeignKey("QLDangKyHocPhan.Models.Sinhvien", "TaiKhoanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CTDaoTao");
 
                     b.Navigation("MaKhoaNavigation");
 
@@ -590,6 +719,13 @@ namespace QLDangKyHocPhan.Migrations
                     b.Navigation("SinhVien");
                 });
 
+            modelBuilder.Entity("QLDangKyHocPhan.Models.CTDAOTAO", b =>
+                {
+                    b.Navigation("ChiTietCtdts");
+
+                    b.Navigation("SinhViens");
+                });
+
             modelBuilder.Entity("QLDangKyHocPhan.Models.Giangvien", b =>
                 {
                     b.Navigation("Lophocphans");
@@ -597,19 +733,27 @@ namespace QLDangKyHocPhan.Migrations
 
             modelBuilder.Entity("QLDangKyHocPhan.Models.Hocphan", b =>
                 {
+                    b.Navigation("ChiTietCtdts");
+
                     b.Navigation("Lophocphans");
                 });
 
             modelBuilder.Entity("QLDangKyHocPhan.Models.Khoa", b =>
                 {
+                    b.Navigation("CTDAOTAOs");
+
+                    b.Navigation("Hocphans");
+
                     b.Navigation("Sinhviens");
                 });
 
             modelBuilder.Entity("QLDangKyHocPhan.Models.Taikhoan", b =>
                 {
-                    b.Navigation("Giangviens");
+                    b.Navigation("Giangvien")
+                        .IsRequired();
 
-                    b.Navigation("Sinhviens");
+                    b.Navigation("Sinhvien")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
