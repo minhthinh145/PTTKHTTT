@@ -4,11 +4,13 @@ import { LoginButton } from "./LoginButton";
 import { PasswordField } from "./PasswordField";
 import { ShowPasswordButton } from "./ShowPassword";
 import { UsernameField } from "./UserNameField";
+import { useNavigate } from "react-router-dom";
 
 export const RightSide = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { signIn, loading, error } = useSignIn();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     const result = await signIn({ tenDangNhap: username, password });
@@ -16,6 +18,7 @@ export const RightSide = () => {
     if (result.status === 200) {
       // TODO: handle success (e.g., navigate to dashboard)
       console.log("Login successful:", result.data);
+      navigate("/HomePage");
     } else {
       console.error("Login failed:", result.message);
     }
