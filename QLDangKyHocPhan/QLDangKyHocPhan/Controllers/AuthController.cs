@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using QLDangKyHocPhan.DTOs.AuthDTOs;
 using QLDangKyHocPhan.Services.Interface;
 using System.Security.Claims;
@@ -32,33 +33,56 @@ namespace QLDangKyHocPhan.Controllers
             return Ok(result);
         }
 
-        [HttpGet("profile")]
-        [Authorize]
-        public async Task<IActionResult> GetProfile()
+            [HttpGet("profile")]
+            [Authorize]
+            public async Task<IActionResult> GetProfile()
+            {
+                try
+                {
+                    var userId = GetUserIdByToken();    
+                    if (string.IsNullOrEmpty(userId))
+                    {
+                        return Unauthorized(new { message = "Invalid token." });
+                    }
+
+                    var userDTO = await _accountService.FindUserById(userId);
+                    if (userDTO == null)
+                    {
+                        return NotFound(new { message = "User not found." });
+                    }
+                    var response = await _accountService.GetProfileByUserAccount(userDTO);
+                    return Ok(response);
+                }
+                catch (Exception ex)
+                {
+
+                    return StatusCode(500, new { message = "An error occurred while retrieving the profile.", error = ex.Message });
+                }
+            }
+
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDTO request)
         {
+            if (string.IsNullOrEmpty(request.RefreshToken))
+            {
+                return BadRequest(new { message = "Refresh token is required." });
+            }
+
             try
             {
-                var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (string.IsNullOrEmpty(userId))
-                {
-                    return Unauthorized(new { message = "Invalid token." });
-                }
-
-                var userDTO = await _accountService.FindUserById(userId);
-                if (userDTO == null)
-                {
-                    return NotFound(new { message = "User not found." });
-                }
-                var response = await _accountService.GetProfileByUserAccount(userDTO);
-                return Ok(response);
+                var accessToken = await _authService.RefreshAccessTokenAsync(request.RefreshToken);
+                return Ok(new { AccessToken = accessToken });
+            }
+            catch (SecurityTokenException ex)
+            {
+                return Unauthorized(new { message = ex.Message });
             }
             catch (Exception ex)
             {
-
-                return StatusCode(500, new { message = "An error occurred while retrieving the profile.", error = ex.Message });
+                return BadRequest(new { message = ex.Message });
             }
         }
-
 
         [HttpPatch("update")]
         public async Task<IActionResult> UpdateUser([FromBody] UserProfileDTO user)
@@ -91,6 +115,20 @@ namespace QLDangKyHocPhan.Controllers
             }
             return Ok(result);
         }
+
+        [HttpPost("signout")]
+        public async Task<IActionResult> SignOut([FromBody] RefreshTokenRequestDTO request)
+        {
+            if (string.IsNullOrEmpty(request.RefreshToken))
+            {
+                return BadRequest(new { message = "Refresh token is required." });
+            }
+
+            await _authService.RevokeRefreshTokenAsync(request.RefreshToken);
+            return Ok(new { message = "Signed out successfully." });
+        }
+
+
         private  string GetUserIdByToken()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);

@@ -13,6 +13,7 @@ using QLDangKyHocPhan.Repositories.Interface;
 using QLDangKyHocPhan.Services.Implementation;
 using QLDangKyHocPhan.Services.Interface;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +28,11 @@ try
     });
 
     // Thêm controllers
-    builder.Services.AddControllers();
+    builder.Services.AddControllers()
+          .AddJsonOptions(options =>
+          {
+              options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+          }); 
 
     // Cấu hình Swagger
     builder.Services.AddEndpointsApiExplorer();

@@ -4,20 +4,22 @@ import { LoginButton } from "./LoginButton";
 import { PasswordField } from "./PasswordField";
 import { UsernameField } from "./UserNameField";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export const RightSide = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const { signIn, loading, error } = useSignIn();
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleLogin = async () => {
     const result = await signIn({ tenDangNhap: username, password });
     console.log("SignIn result:", result);
-    navigate("/login");
-    if (result.status === 200) {
-      // TODO: handle success (e.g., navigate to dashboard)
+
+    if (result.status === 200 && result.data) {
       console.log("Login successful:", result.data);
+      await login(username, result.data.accessToken, result.data.refreshToken);
       navigate("/HomePage");
     } else {
       console.error("Login failed:", result.message);
