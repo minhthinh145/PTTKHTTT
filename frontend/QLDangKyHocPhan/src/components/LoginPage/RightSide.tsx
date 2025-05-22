@@ -33,7 +33,7 @@ export const RightSide = () => {
       </div>
 
       {/* Phần form, bọc trong div bg trắng, bo góc, padding */}
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-md border border-gray-50 hover:border-black transition-all">
+      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-md border border-gray-50">
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold text-red-500">ĐĂNG NHẬP</h1>
           <p className="text-sm">Cổng đăng ký học phần</p>
