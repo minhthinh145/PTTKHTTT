@@ -1,5 +1,5 @@
-import { ShowPassword } from "../buttons/ShowPassword"; // Đảm bảo đường dẫn đúng
-import React from "react";
+import React, { useState } from "react";
+import { HiEye, HiEyeSlash } from "react-icons/hi2";
 
 interface Props {
   value: string;
@@ -7,14 +7,18 @@ interface Props {
 }
 
 export const PasswordField = ({ value, onChange }: Props) => {
+  const [show, setShow] = useState(false);
+  const toggleShow = () => setShow((prev) => !prev);
+
   return (
-    <div className="relative w-full max-w-md mx-auto mb-6">
+    <div className="relative">
       <input
         id="password"
-        type="password"
+        type={show ? "text" : "password"}
         value={value}
         onChange={onChange}
-        className="peer block w-full rounded-lg border-2 border-blue-800  px-4 pt-6 pb-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
+        placeholder=" "
+        className="peer block w-full rounded-lg border-2 border-blue-800 px-4 pt-6 pb-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600"
       />
       <label
         htmlFor="password"
@@ -22,7 +26,16 @@ export const PasswordField = ({ value, onChange }: Props) => {
       >
         Mật khẩu
       </label>
-      <ShowPassword id="password" />
+      <span
+        className="absolute inset-y-0 right-3 flex items-center text-gray-400 cursor-pointer"
+        onClick={toggleShow}
+      >
+        {show ? (
+          <HiEyeSlash className="text-xl" />
+        ) : (
+          <HiEye className="text-xl" />
+        )}
+      </span>
     </div>
   );
 };

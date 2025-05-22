@@ -27,7 +27,7 @@ export const RightSide = () => {
   };
 
   return (
-    <div className="flex-1 flex flex-col bg-[#effafd] px-10 py-6 mt-10">
+    <div className="flex-1 flex flex-col bg-[#effafd] px-10 py-6 my-auto">
       {/* Header trên cùng */}
       <div className="mb-6 text-center">
         <h2 className="text-xl ">TRƯỜNG ĐẠI HỌC ABCD</h2>
@@ -35,7 +35,7 @@ export const RightSide = () => {
       </div>
 
       {/* Phần form, bọc trong div bg trắng, bo góc, padding */}
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-md border border-gray-50 hover:border-black transition-all">
+      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-md border border-gray-50">
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold text-red-500">ĐĂNG NHẬP</h1>
           <p className="text-sm">Cổng đăng ký học phần</p>
