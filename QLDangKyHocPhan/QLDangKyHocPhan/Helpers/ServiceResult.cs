@@ -1,4 +1,7 @@
-﻿namespace QLDangKyHocPhan.Helpers
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using System.Security.Claims;
+
+namespace QLDangKyHocPhan.Helpers
 {
     public class ServiceResult
     {
@@ -15,5 +18,6 @@
         {
             return new ServiceResult { IsSuccess = false, Message = message, Data = data };
         }
+
     }
 }
