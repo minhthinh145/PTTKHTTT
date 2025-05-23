@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QLDangKyHocPhan.Contexts;
 
@@ -11,9 +12,11 @@ using QLDangKyHocPhan.Contexts;
 namespace QLDangKyHocPhan.Migrations
 {
     [DbContext(typeof(QlDangKyHocPhanContext))]
-    partial class QlDangKyHocPhanContextModelSnapshot : ModelSnapshot
+    [Migration("20250523085734_AddTableHocPhanDangKy")]
+    partial class AddTableHocPhanDangKy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -256,7 +259,7 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.Property<string>("MaLopHocPhan")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("MaSinhVien")
                         .IsRequired()
@@ -333,7 +336,7 @@ namespace QLDangKyHocPhan.Migrations
                 {
                     b.Property<string>("MaLopHocPhan")
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("MaGiangVien")
                         .HasMaxLength(10)
@@ -354,9 +357,6 @@ namespace QLDangKyHocPhan.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<int?>("SoLuong")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SoLuongDangKy")
                         .HasColumnType("int");
 
                     b.HasKey("MaLopHocPhan")
@@ -545,7 +545,7 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.Property<string>("MaLopHP")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("MaSinhVien")
                         .IsRequired()

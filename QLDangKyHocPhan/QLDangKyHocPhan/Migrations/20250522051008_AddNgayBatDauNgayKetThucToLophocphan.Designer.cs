@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QLDangKyHocPhan.Contexts;
 
@@ -11,9 +12,11 @@ using QLDangKyHocPhan.Contexts;
 namespace QLDangKyHocPhan.Migrations
 {
     [DbContext(typeof(QlDangKyHocPhanContext))]
-    partial class QlDangKyHocPhanContextModelSnapshot : ModelSnapshot
+    [Migration("20250522051008_AddNgayBatDauNgayKetThucToLophocphan")]
+    partial class AddNgayBatDauNgayKetThucToLophocphan
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,31 +249,6 @@ namespace QLDangKyHocPhan.Migrations
                     b.ToTable("Giangviens");
                 });
 
-            modelBuilder.Entity("QLDangKyHocPhan.Models.HocPhanDangKy", b =>
-                {
-                    b.Property<int>("MaHP_DangKy")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MaHP_DangKy"));
-
-                    b.Property<string>("MaLopHocPhan")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("MaSinhVien")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("MaHP_DangKy");
-
-                    b.HasIndex("MaLopHocPhan");
-
-                    b.HasIndex("MaSinhVien");
-
-                    b.ToTable("HocPhanDangKys");
-                });
-
             modelBuilder.Entity("QLDangKyHocPhan.Models.Hocphan", b =>
                 {
                     b.Property<string>("MaHocPhan")
@@ -333,7 +311,7 @@ namespace QLDangKyHocPhan.Migrations
                 {
                     b.Property<string>("MaLopHocPhan")
                         .HasMaxLength(10)
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("MaGiangVien")
                         .HasMaxLength(10)
@@ -341,6 +319,9 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.Property<string>("MaHocPhan")
                         .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("MaHocPhanNavigationMaHocPhan")
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime?>("NgayBatDau")
@@ -356,15 +337,14 @@ namespace QLDangKyHocPhan.Migrations
                     b.Property<int?>("SoLuong")
                         .HasColumnType("int");
 
-                    b.Property<int>("SoLuongDangKy")
-                        .HasColumnType("int");
-
                     b.HasKey("MaLopHocPhan")
                         .HasName("PK__LOPHOCPH__82581CD9FD3C38B2");
 
                     b.HasIndex("MaGiangVien");
 
                     b.HasIndex("MaHocPhan");
+
+                    b.HasIndex("MaHocPhanNavigationMaHocPhan");
 
                     b.ToTable("LOPHOCPHAN", (string)null);
                 });
@@ -545,7 +525,7 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.Property<string>("MaLopHP")
                         .IsRequired()
-                        .HasColumnType("varchar(50)");
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("MaSinhVien")
                         .IsRequired()
@@ -655,25 +635,6 @@ namespace QLDangKyHocPhan.Migrations
                     b.Navigation("TaiKhoan");
                 });
 
-            modelBuilder.Entity("QLDangKyHocPhan.Models.HocPhanDangKy", b =>
-                {
-                    b.HasOne("QLDangKyHocPhan.Models.Lophocphan", "LopHocPhan")
-                        .WithMany()
-                        .HasForeignKey("MaLopHocPhan")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("QLDangKyHocPhan.Models.Sinhvien", "SinhVien")
-                        .WithMany()
-                        .HasForeignKey("MaSinhVien")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("LopHocPhan");
-
-                    b.Navigation("SinhVien");
-                });
-
             modelBuilder.Entity("QLDangKyHocPhan.Models.Hocphan", b =>
                 {
                     b.HasOne("QLDangKyHocPhan.Models.Khoa", "Khoa")
@@ -693,12 +654,17 @@ namespace QLDangKyHocPhan.Migrations
 
                     b.HasOne("QLDangKyHocPhan.Models.Hocphan", "Hocphan")
                         .WithMany("Lophocphans")
-                        .HasForeignKey("MaHocPhan")
-                        .HasConstraintName("FK_Lophocphan_Hocphan");
+                        .HasForeignKey("MaHocPhan");
+
+                    b.HasOne("QLDangKyHocPhan.Models.Hocphan", "MaHocPhanNavigation")
+                        .WithMany()
+                        .HasForeignKey("MaHocPhanNavigationMaHocPhan");
 
                     b.Navigation("Hocphan");
 
                     b.Navigation("MaGiangVienNavigation");
+
+                    b.Navigation("MaHocPhanNavigation");
                 });
 
             modelBuilder.Entity("QLDangKyHocPhan.Models.RefreshToken", b =>
