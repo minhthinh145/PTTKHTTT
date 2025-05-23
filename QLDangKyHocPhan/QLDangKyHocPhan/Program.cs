@@ -100,10 +100,26 @@ try
     builder.Services.AddScoped<IAccountService, AccountService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
     builder.Services.AddScoped<IUserImportService, UserImportService>();
+    builder.Services.AddScoped<IChuongTrinhDaoTaoService, ChuongTrinhDaoTaoService>();
+    builder.Services.AddScoped<ILopHocPhanService, LopHocPhanService>();
+    builder.Services.AddScoped<ILichSuDangKyService, LichSuDangKyService>();
+    builder.Services.AddScoped<IHocPhanService, HocPhanService>();
+    builder.Services.AddScoped<ISinhVienService, SinhVienService>();
+    builder.Services.AddScoped<IDangKyHocPhanService, DangKyHocPhanService>();
+
+
     builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+    builder.Services.AddScoped<IChuongTrinhDaoTaoRepository, ChuongTrinhDaoTaoRepository>();
     builder.Services.AddScoped<ISinhVienRepository, SinhVienRepository>();
     builder.Services.AddScoped<IAccountRepository, AccountRepository>();
-    builder.Services.AddScoped<ISinhVienService, SinhVienService>();
+    builder.Services.AddScoped<ILopHocPhanRepository, LopHocPhanRepository>();
+    builder.Services.AddScoped<IDangKyHocPhanRepository, DangKyHocPhanRepository>();
+    builder.Services.AddScoped<ILichSuDangKyRepository, LichSuDangKyRepository>();
+    builder.Services.AddScoped<IHocPhanRepository, HocPhanRepository>();
+    builder.Services.AddScoped<IHocPhanDangKyRepository, HocPhanDangKyRepository>();
+
+
+
     // Cấu hình giới hạn file upload
     builder.Services.Configure<FormOptions>(options =>
     {
