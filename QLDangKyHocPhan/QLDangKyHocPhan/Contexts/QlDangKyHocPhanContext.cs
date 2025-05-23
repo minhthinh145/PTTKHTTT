@@ -33,7 +33,9 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
     public virtual DbSet<CTDAOTAO> CTDAOTAOs { get; set; }
 
     public virtual DbSet<CHITIET_CTDT> CHITIET_CTDTs { get; set; }
-    public DbSet<DangKy> DangKys { get; set; }
+    public virtual DbSet<DangKy> DangKys { get; set; }
+
+    public virtual DbSet<HocPhanDangKy> HocPhanDangKys { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
 
@@ -231,14 +233,16 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
             entity.Property(e => e.MaLopHocPhan).HasMaxLength(10);
             entity.Property(e => e.MaGiangVien).HasMaxLength(10);
             entity.Property(e => e.MaHocPhan).HasMaxLength(10);
-            entity.Property(e => e.NgayHoc).HasMaxLength(50);
             entity.Property(e => e.PhongHoc).HasMaxLength(50);
 
             entity.HasOne(d => d.MaGiangVienNavigation).WithMany(p => p.Lophocphans)
                 .HasForeignKey(d => d.MaGiangVien)
                 .HasConstraintName("FK__LOPHOCPHA__MaGia__5BE2A6F2");
 
-
+                entity.HasOne(d => d.Hocphan)
+        .WithMany(p => p.Lophocphans)
+        .HasForeignKey(d => d.MaHocPhan)
+        .HasConstraintName("FK_Lophocphan_Hocphan");
         });
 
         modelBuilder.Entity<Sinhvien>(entity =>
@@ -274,6 +278,17 @@ public partial class QlDangKyHocPhanContext : IdentityDbContext<Taikhoan>
             .WithMany()
             .HasForeignKey(e => e.UserId);
         });
+
+        modelBuilder.Entity<HocPhanDangKy>()
+        .HasOne(hp => hp.SinhVien)
+        .WithMany()
+        .HasForeignKey(hp => hp.MaSinhVien);
+
+        modelBuilder.Entity<HocPhanDangKy>()
+            .HasOne(hp => hp.LopHocPhan)
+            .WithMany()
+            .HasForeignKey(hp => hp.MaLopHocPhan);
+
         OnModelCreatingPartial(modelBuilder);
     }
 
