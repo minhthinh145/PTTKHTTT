@@ -9,5 +9,6 @@ namespace QLDangKyHocPhan.Repositories.Interface
         Task<List<Lophocphan>> GetLopHocPhanChuaDangKyByMaHP(string maHP , string mssv);
         Task<bool> UpdateSiSoPlusOneAsync(string maLopHocPhan);
         Task<bool> UpdateSiSoMinusOneAsync(string maLopHocPhan);
+        Task<List<Lophocphan>> GetAllLopHocPhanAsync();
     }
 }

@@ -14,6 +14,16 @@ namespace QLDangKyHocPhan.Repositories.Implementation
             _context = context;
         }
 
+        public async Task<List<Lophocphan>> GetAllLopHocPhanAsync()
+        {
+            var result = await _context.Lophocphans
+        .Include(lhp => lhp.Hocphan)
+        .Include(lhp => lhp.MaGiangVienNavigation) 
+        .ToListAsync();
+
+            return result;
+        }
+
         public async Task<List<Lophocphan>> GetLopHocPhanByMaHP(string maHP)
         {
             var result = await _context.Lophocphans
@@ -41,6 +51,7 @@ namespace QLDangKyHocPhan.Repositories.Implementation
             // Lấy danh sách lớp học phần theo mã học phần mà sinh viên chưa đăng ký
             var lopChuaDangKy = await _context.Lophocphans
                 .Include(lhp => lhp.Hocphan)
+                .Include(lhp => lhp.MaGiangVienNavigation)
                 .Where(lhp => lhp.MaHocPhan == maHP && !lopDaDangKy.Contains(lhp.MaLopHocPhan))
                 .ToListAsync();
 

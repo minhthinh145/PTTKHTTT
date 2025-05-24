@@ -16,8 +16,17 @@ namespace QLDangKyHocPhan.Helpers
                         .ForMember(dest => dest.TenCTDT, opt => opt.MapFrom(src => src.CTDaoTao != null ? src.CTDaoTao.TenCTDT : null));
             CreateMap<Hocphan,HocPhanDTO>().ReverseMap();
             CreateMap<CHITIET_CTDT,DanhSachMonDTO>().ReverseMap();
-            CreateMap<Lophocphan, LopHocPhanDTO>().ReverseMap();
-            CreateMap<DangKy, DangKyDTO>().ReverseMap();
+            CreateMap<Lophocphan, LopHocPhanDTO>()
+     .ForMember(dest => dest.TenGiangVien, opt => opt.MapFrom(src => src.MaGiangVienNavigation.HoTen))
+     .ForMember(dest => dest.TenHocPhan, opt => opt.MapFrom(src => src.Hocphan.TenHocPhan))
+     .ForMember(dest => dest.SoTinChi, opt => opt.MapFrom(src => src.Hocphan.SoTc))
+     .ForMember(dest => dest.LoaiHocPhan, opt => opt.MapFrom(src => src.Hocphan.LoaiHocPhan));
+
+
+            CreateMap<DangKy, DangKyDTO>()
+                .ForMember(dest => dest.MaHocPhan, opt => opt.MapFrom(src => src.LopHocPhan.MaHocPhan))
+                .ForMember(dest => dest.TenHocPhan, opt => opt.MapFrom(src => src.LopHocPhan.Hocphan.TenHocPhan))
+                .ReverseMap();
         }
     }
 }

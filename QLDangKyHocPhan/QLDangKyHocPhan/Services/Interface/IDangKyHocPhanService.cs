@@ -6,5 +6,6 @@ namespace QLDangKyHocPhan.Services.Interface
     {
         Task<ServiceResult> DangKyHocPhanAsync(string mssv, string maLopHocPhan);
         Task<ServiceResult> HuyDangKyHocPhanAsync(string mssv, string maLopHocPhan);
+        Task<ServiceResult> ChuyenLopDangKyAsync(string mssv, string maLopHocPhan, string maLopHocPhanMoi);
     }
 }

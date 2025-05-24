@@ -6,5 +6,7 @@ namespace QLDangKyHocPhan.Repositories.Interface
     {
         Task<bool> DangKyHocPhanAsync(string mssv, string maLopHocPhan);
         Task<bool> HuyDangKyHocPhanAsync(string mssv, string maLopHocPhan);
+        Task<bool> ChuyenLopDangKyAsync(string mssv, string maLopHocPhan, string maLopHocPhanMoi);
+
     }
 }

@@ -5,6 +5,7 @@ using QLDangKyHocPhan.DTOs;
 using QLDangKyHocPhan.DTOs.AuthDTOs;
 using QLDangKyHocPhan.Helpers;
 using QLDangKyHocPhan.Models;
+using QLDangKyHocPhan.Repositories.Interface;
 using QLDangKyHocPhan.Services.Interface;
 
 namespace QLDangKyHocPhan.Services.Implementation
@@ -15,13 +16,15 @@ namespace QLDangKyHocPhan.Services.Implementation
         private readonly IMapper _mapper;
         private readonly IAuthService _authService;
         private readonly ISinhVienService _sinhVien;
+        private readonly IGiangVienService _giangVien;
 
-        public AccountService(UserManager<Taikhoan> userManager , IMapper mapper , IAuthService authService , ISinhVienService sinhVien)
+        public AccountService(UserManager<Taikhoan> userManager, IMapper mapper, IAuthService authService, ISinhVienService sinhVien, IGiangVienService giangvien)
         {
             _userManager = userManager;
             _mapper = mapper;
             _authService = authService;
             _sinhVien = sinhVien;
+            _giangVien = giangvien;
         }
 
         public async Task<ServiceResult> CheckPasswordAsync(string userId, string password)
@@ -58,6 +61,15 @@ namespace QLDangKyHocPhan.Services.Implementation
             {
                 var result = await _sinhVien.GetSinhVienByIdAsync(userProfile.TenDangNhap);
                 return result;
+            }
+           if(userProfile.LoaiTaiKhoan == "GiangVien")
+            {
+               var result = await _giangVien.GetGiangVienByIdAsync(userProfile.TenDangNhap);
+                if (result != null)
+                {
+                    return result;
+                }
+
             }
             return ServiceResult.Failure("Không tìm thấy thông tin người dùng");
         }

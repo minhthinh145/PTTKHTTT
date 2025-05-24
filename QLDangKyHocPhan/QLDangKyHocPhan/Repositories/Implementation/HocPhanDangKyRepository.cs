@@ -11,7 +11,7 @@ namespace QLDangKyHocPhan.Repositories.Implementation
 
         public HocPhanDangKyRepository(QlDangKyHocPhanContext context)
         {
-            _context = context;            
+            _context = context;
         }
         public async Task<bool> AddHocPhanDangKyAsync(HocPhanDangKy hocPhanDangKy)
         {
@@ -32,5 +32,18 @@ namespace QLDangKyHocPhan.Repositories.Implementation
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<List<Lophocphan>> GetLopHocPhangDaDangKyByMSSV(string mssv)
+        {
+            var lopHocPhans = await _context.HocPhanDangKys
+      .Where(hpdk => hpdk.MaSinhVien == mssv)
+      .Include(hpdk => hpdk.LopHocPhan)
+          .ThenInclude(lhp => lhp.Hocphan)
+      .Include(hpdk => hpdk.LopHocPhan)
+          .ThenInclude(lhp => lhp.MaGiangVienNavigation)
+      .Select(hpdk => hpdk.LopHocPhan)
+      .ToListAsync();
+
+            return lopHocPhans;
+        }
     }
 }

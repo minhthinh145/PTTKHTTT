@@ -106,6 +106,9 @@ try
     builder.Services.AddScoped<IHocPhanService, HocPhanService>();
     builder.Services.AddScoped<ISinhVienService, SinhVienService>();
     builder.Services.AddScoped<IDangKyHocPhanService, DangKyHocPhanService>();
+    builder.Services.AddScoped<IHocPhanDangKyService, HocPhanDangKyService>();
+    builder.Services.AddScoped<IGiangVienService, GiangVienService>();
+
 
 
     builder.Services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
@@ -117,8 +120,16 @@ try
     builder.Services.AddScoped<ILichSuDangKyRepository, LichSuDangKyRepository>();
     builder.Services.AddScoped<IHocPhanRepository, HocPhanRepository>();
     builder.Services.AddScoped<IHocPhanDangKyRepository, HocPhanDangKyRepository>();
+    builder.Services.AddScoped<IGiangVienRepository, GiangVienRepository>();
 
 
+
+    builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+        options.JsonSerializerOptions.MaxDepth = 64; // nếu muốn tăng max depth
+    });
 
     // Cấu hình giới hạn file upload
     builder.Services.Configure<FormOptions>(options =>

@@ -18,7 +18,7 @@ namespace QLDangKyHocPhan.Services.Implementation
         }
         public async Task<ServiceResult> GetAllLopHocPhanAsync()
         {
-            var listLopHocPhan = await _repo.GetLopHocPhanChuaDangKyAsync();
+            var listLopHocPhan = await _repo.GetAllLopHocPhanAsync();
             if (listLopHocPhan == null || listLopHocPhan.Count == 0)
             {
                 return ServiceResult.Failure("Không tìm thấy lớp học phần nào! Vui lòng làm mới lại trang");

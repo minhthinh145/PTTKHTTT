@@ -9,12 +9,11 @@ interface UseGetProfileResult {
   reloadProfile: () => Promise<void>;
 }
 
-// getValidToken là hàm async trả về Promise<string | null>
 export function useGetProfile(
   getValidToken: () => Promise<string | null>
 ): UseGetProfileResult {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   const loadUserProfile = useCallback(async () => {
@@ -31,7 +30,6 @@ export function useGetProfile(
 
     try {
       const token = await getValidToken();
-      console.log("useGetProfile: getValidToken returned token:", token);
 
       if (!token) {
         setError("No valid token");
@@ -41,7 +39,6 @@ export function useGetProfile(
       }
 
       const response: ApiResponse<User> = await getProfile(token);
-
       if (response.data) {
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
@@ -60,7 +57,6 @@ export function useGetProfile(
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
-    console.log("useGetProfile useEffect - storedToken:", storedToken);
     if (storedToken) {
       loadUserProfile();
     } else {

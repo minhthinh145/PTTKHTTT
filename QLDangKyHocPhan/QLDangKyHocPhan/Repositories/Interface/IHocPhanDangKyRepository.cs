@@ -1,4 +1,5 @@
-﻿using QLDangKyHocPhan.Models;
+﻿using QLDangKyHocPhan.DTOs;
+using QLDangKyHocPhan.Models;
 
 namespace QLDangKyHocPhan.Repositories.Interface
 {
@@ -6,5 +7,6 @@ namespace QLDangKyHocPhan.Repositories.Interface
     {
         Task<bool> AddHocPhanDangKyAsync(HocPhanDangKy hocPhanDangKy);
         Task<bool> DeleteHocPhanDangKyAsync(HocPhanDangKy hocPhanDangKy);
+        Task<List<Lophocphan>> GetLopHocPhangDaDangKyByMSSV(string mssv); 
     }
 }

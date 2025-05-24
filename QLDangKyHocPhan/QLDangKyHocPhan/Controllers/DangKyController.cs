@@ -47,6 +47,17 @@ namespace QLDangKyHocPhan.Controllers
             return Ok(result);
         }
 
+        [HttpPost("chuyen")]
+        public async Task<IActionResult> ChuyenLopHocPhan([FromBody] RequestChuyenLopHocPhanDTO request)
+        {
+            var mssv = GetUserIdByToken();
+            if (string.IsNullOrEmpty(mssv))
+                return Unauthorized("Không thể xác định sinh viên");
+            var result = await _service.ChuyenLopDangKyAsync(mssv, request.MaLopHocPhanCu, request.MaLopHocPhanMoi);
+            if (!result.IsSuccess)
+                return BadRequest(result.Message);
+            return Ok(result);
+        }
         private string GetUserIdByToken()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -54,7 +65,7 @@ namespace QLDangKyHocPhan.Controllers
             {
                 return userIdClaim.Value;
             }
-            return null;
+            return string.Empty;
         }
     }
 }

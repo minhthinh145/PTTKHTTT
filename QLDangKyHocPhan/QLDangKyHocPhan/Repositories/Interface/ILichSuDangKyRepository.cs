@@ -1,4 +1,5 @@
-﻿using YourProjectNamespace.Models;
+﻿using QLDangKyHocPhan.Models;
+using YourProjectNamespace.Models;
 
 namespace QLDangKyHocPhan.Repositories.Interface
 {

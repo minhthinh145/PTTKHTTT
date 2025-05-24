@@ -7,5 +7,6 @@ namespace QLDangKyHocPhan.Services.Interface
         Task<ServiceResult> GetLopHocPhanByMaHocPhanAsync(string MaPH);
         Task<ServiceResult> GetAllLopHocPhanAsync();
         Task<ServiceResult> GetLopHocPhanChuaDangKyByMaHocPhanAsync(string MaPH, string mssv);
+        
     }
 }

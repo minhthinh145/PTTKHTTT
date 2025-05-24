@@ -66,6 +66,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const loadUserProfile = async (token: string) => {
     try {
       const response = await getProfile(token);
+
       if (response.data) {
         setUser(response.data);
         localStorage.setItem("user", JSON.stringify(response.data));
@@ -77,7 +78,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       await logout();
     }
   };
-
   // Hàm getValidToken chỉnh theo ý bạn, đọc fallback từ localStorage nếu state null
   const getValidToken = async (): Promise<string | null> => {
     let token = accessToken || localStorage.getItem("accessToken");
@@ -95,14 +95,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const currentTime = Date.now() / 1000;
 
       if (decoded.exp > currentTime) {
-        console.log("getValidToken: Token is still valid");
         return token;
       }
 
-      console.log("getValidToken: Token expired, refreshing...");
       const refreshResponse = await callRefreshToken({ refreshToken: rToken });
-
-      console.log("getValidToken: Refresh response:", refreshResponse);
 
       if (refreshResponse.data?.accessToken) {
         const newAccessToken = refreshResponse.data.accessToken;
@@ -134,13 +130,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       localStorage.setItem("accessToken", newAccessToken);
       localStorage.setItem("refreshToken", newRefreshToken);
       localStorage.setItem("user", JSON.stringify({ username }));
-
-      console.log("Login - Tokens saved:", {
-        accessToken: newAccessToken,
-        refreshToken: newRefreshToken,
-        localStorageAccessToken: localStorage.getItem("accessToken"),
-        localStorageRefreshToken: localStorage.getItem("refreshToken"),
-      });
 
       await loadUserProfile(newAccessToken);
     } catch (err) {

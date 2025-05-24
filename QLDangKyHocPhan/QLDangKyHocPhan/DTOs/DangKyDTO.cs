@@ -7,10 +7,9 @@ namespace QLDangKyHocPhan.DTOs
     public class DangKyDTO
     {
 
-        public string MaSinhVien { get; set; }
-
+        public string MaHocPhan { get; set; }
         public string MaLopHP { get; set; }
-
+        public string TenHocPhan { get; set; }
         public DateTime NgayThucHien { get; set; }
 
         public string LoaiDangKy { get; set; }  // 'DangKy' hoặc 'HuyDangKy'

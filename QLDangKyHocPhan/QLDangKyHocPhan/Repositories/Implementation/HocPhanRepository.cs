@@ -13,6 +13,17 @@ namespace QLDangKyHocPhan.Repositories.Implementation
         {
             _context = context;
         }
+
+        public async Task<List<Hocphan>> GetAllHocPhanAsync()
+        {
+            return await _context.Hocphans.ToListAsync();
+        }
+
+        public async Task<Hocphan> GetHocPhanByMaHocPhanAsync(string maHP)
+        {
+            return await _context.Hocphans.FirstOrDefaultAsync(p => p.MaHocPhan == maHP);
+        }
+
         public async Task<List<Hocphan>> GetHocPhanChuaDangKyAsync(string maChuongTrinhDaoTao, string maSinhVien)
         {
             // Lấy danh sách mã học phần đã đăng ký

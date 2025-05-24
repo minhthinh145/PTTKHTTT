@@ -1,23 +1,43 @@
+import type { User } from "../../apis/types/user";
+
 interface Props {
   activeTab: string;
   setActiveTab: (tab: string) => void;
+  user: User | null;
 }
 
-const Sidebar = ({ activeTab, setActiveTab }: Props) => {
-  const navItems = [
+const Sidebar = ({ activeTab, setActiveTab, user }: Props) => {
+  const isGiangVien = user && "maGiangVien" in user;
+
+  // Menu dành cho giảng viên
+  const giangVienNavItems = [
+    { key: "classList", label: "📋 Danh sách lớp giảng dạy" },
+  ];
+
+  // Menu dành cho sinh viên
+  const sinhVienNavItems = [
     { key: "register", label: "📘 Đăng ký học phần" },
     { key: "enroll", label: "📝 Đăng ký ghi danh" },
     { key: "search", label: "🔍 Tra cứu học phần" },
     { key: "history", label: "📅 Lịch sử đăng ký học phần" },
   ];
 
+  const navItems = isGiangVien ? giangVienNavItems : sinhVienNavItems;
+
   return (
     <aside className="w-64 bg-[#053C65] text-white p-4 flex flex-col gap-4 cursor-default">
       <div className="bg-gray-700 p-4 rounded">
-        <div className="font-bold">Nguyễn Xuân Khang</div>
-        <div className="text-sm text-gray-300">48.01.104.065</div>
-        <div className="font-semibold mt-2">Sinh viên</div>
+        <div className="font-bold">{user?.hoTen ?? "Chưa đăng nhập"}</div>
+        {isGiangVien ? (
+          <div className="text-sm text-gray-300">{user.maGiangVien}</div>
+        ) : (
+          <div className="text-sm text-gray-300">{user?.maSinhVien}</div>
+        )}
+        <div className="font-semibold mt-2">
+          {isGiangVien ? "Giảng viên" : "Sinh viên"}
+        </div>
       </div>
+
       <nav className="flex flex-col gap-2">
         {navItems.map((item) => (
           <button

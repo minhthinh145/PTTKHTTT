@@ -16,7 +16,7 @@ namespace QLDangKyHocPhan.Controllers
             _service = service;
         }
 
-        [HttpGet("hpdangky")]
+        [HttpPost("hpdangky")]
         public async Task<IActionResult> GetHocPhanChuaDangKy([FromBody] SinhVienDTO dto)
         {
             var result = await _service.GetHocPhanChuaDangKyAsync(dto.MaCT, dto.MaSinhVien);
@@ -28,5 +28,15 @@ namespace QLDangKyHocPhan.Controllers
             return Ok(result);
         }
 
+        [HttpPost("getall")]
+        public async Task<IActionResult> GetAllHocPhan()
+        {
+            var result = await _service.GetAllHocPhan();
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Message });
+            }
+            return Ok(result);
+        }
     }
 }

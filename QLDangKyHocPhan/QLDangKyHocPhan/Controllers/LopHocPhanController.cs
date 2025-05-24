@@ -29,7 +29,7 @@ namespace QLDangKyHocPhan.Controllers
             return Ok(result);
         }
 
-        [HttpGet("getLop")]
+        [HttpPost("getLop")]
         public async Task<IActionResult> GetLopHocPhanByMaLop([FromBody]RequestGetLop dto)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

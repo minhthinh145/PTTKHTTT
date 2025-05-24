@@ -13,6 +13,15 @@ namespace QLDangKyHocPhan.Services.Implementation
             _dangKyRepo = dangKyRepo;
         }
 
+        public async Task<ServiceResult> ChuyenLopDangKyAsync(string mssv, string maLopHocPhan, string maLopHocPhanMoi)
+        {
+            var success = await _dangKyRepo.ChuyenLopDangKyAsync(mssv, maLopHocPhan, maLopHocPhanMoi);
+            if (!success)
+                return ServiceResult.Failure("Chuyển lớp đăng ký thất bại!");
+            return ServiceResult.Success("Chuyển lớp đăng ký thành công!");
+
+        }
+
         public async Task<ServiceResult> DangKyHocPhanAsync(string mssv, string maLopHocPhan)
         {
             var success = await _dangKyRepo.DangKyHocPhanAsync(mssv, maLopHocPhan);
