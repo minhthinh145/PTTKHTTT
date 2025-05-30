@@ -1,6 +1,6 @@
 // import React from "react";
-import { LeftSide } from "../components/LoginPage/LeftSide";
-import { RightSide } from "../components/LoginPage/RightSide";
+import { LeftSide } from "../components/Auth/LoginPage/LeftSide";
+import { RightSide } from "../components/Auth/LoginPage/RightSide";
 export const LoginPage = () => {
   return (
     <div className="bg-[#effafd]">

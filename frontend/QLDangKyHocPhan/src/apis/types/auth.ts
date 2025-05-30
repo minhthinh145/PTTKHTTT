@@ -6,6 +6,7 @@ export interface SignInDTO {
 export interface TokenResponseDTO {
   accessToken: string;
   refreshToken: string;
+  loaiTaiKhoan: string; // "SINHVIEN" | "GIANGVIEN" | "QUANTRIVIEN"
 }
 
 export interface RefreshTokenRequestDTO {

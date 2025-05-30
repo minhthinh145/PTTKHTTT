@@ -7,5 +7,6 @@ namespace QLDangKyHocPhan.Repositories.Interface
     {
         Task<Giangvien?> GetGiangVienByIdAsync(string id);
         Task<List<Lophocphan>> GetLopHocPhanByMaGiangVienAsync(string maGiangVien);
+        Task<List<Sinhvien>> GetSinhViensByMaLopHocPhanAsync(string maLopHocPhan);
     }
 }

@@ -26,10 +26,6 @@ export const callGetAllLopHocPhan = async (): Promise<
   }
 };
 
-interface RequestGetLop {
-  MaHocPhan: string;
-}
-
 export const callGetLopHocPhanByMaHocPhan = async (
   maHocPhan: string
 ): Promise<ApiResponse<LopHocPhanDTO[]>> => {

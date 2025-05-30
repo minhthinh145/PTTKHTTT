@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QLDangKyHocPhan.DTOs;
 using QLDangKyHocPhan.Models;
 using QLDangKyHocPhan.Services.Interface;
 using System.Collections.Generic;
@@ -27,5 +28,12 @@ namespace QLDangKyHocPhan.Controllers
            
             return Ok(list);
         }
+        [HttpPost("sinhvien-by-lophocphan")]
+        public async Task<IActionResult> GetSinhVienByMaLopHocPhan([FromBody] RequestDangKyDTO req)
+        {
+            var result = await _giangVienService.GetSinhVienByMaLopHocPhanAsync(req.MaLopHocPhan);
+            return Ok(result);
+        }
+
     }
 }

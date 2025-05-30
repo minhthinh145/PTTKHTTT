@@ -90,7 +90,8 @@ namespace QLDangKyHocPhan.Services.Implementation
             var tokenData = new TokenResponseDTO
             {
                 AccessToken = accessToken,
-                RefreshToken = refreshToken
+                RefreshToken = refreshToken,
+                LoaiTaiKhoan = user.LoaiTaiKhoan
             };
 
             return ServiceResult.Success("Tokens generated successfully.", tokenData);

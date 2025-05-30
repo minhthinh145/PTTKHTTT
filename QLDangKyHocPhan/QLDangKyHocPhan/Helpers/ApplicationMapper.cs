@@ -27,6 +27,7 @@ namespace QLDangKyHocPhan.Helpers
                 .ForMember(dest => dest.MaHocPhan, opt => opt.MapFrom(src => src.LopHocPhan.MaHocPhan))
                 .ForMember(dest => dest.TenHocPhan, opt => opt.MapFrom(src => src.LopHocPhan.Hocphan.TenHocPhan))
                 .ReverseMap();
+            CreateMap<Giangvien, GiangVienDTO>().ReverseMap();
         }
     }
 }

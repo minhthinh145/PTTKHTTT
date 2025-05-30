@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 const Header = () => {
   const { user, logout } = useAuth();

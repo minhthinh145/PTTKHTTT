@@ -1,15 +1,15 @@
 import axiosInstance from "../axiosConfig";
 import type { ApiResponse } from "../types/auth";
 import type { HocPhanDTO } from "../types/HocPhan";
-import type { User } from "../types/user";
+import type { SinhVienProfile } from "../../apis/types/user";
 
 export const callGetHocPhanChuaDangKy = async (
-  user: User
+  user: SinhVienProfile
 ): Promise<ApiResponse<HocPhanDTO[]>> => {
   try {
     const response = await axiosInstance.post<ApiResponse<HocPhanDTO[]>>(
       "/api/hocphan/hpdangky",
-      user, // gửi nguyên object User
+      user, 
       {
         headers: {
           "Content-Type": "application/json",

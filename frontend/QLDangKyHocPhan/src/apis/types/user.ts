@@ -1,7 +1,6 @@
 export type Role = "SinhVien" | "GiangVien";
 
 export interface SinhVienProfile {
-  role: "SinhVien";
   maSinhVien: string;
   hoTen: string;
   ngaySinh: string;
@@ -12,17 +11,6 @@ export interface SinhVienProfile {
   maCT: string;
   tenCTDT: string;
 }
-
-export interface GiangVienProfile {
-  role: "GiangVien";
-  maGiangVien: string;
-  hoTen: string;
-  diaChi: string;
-  lopHoc: string;
-  email: string;
-}
-
-export type User = SinhVienProfile | GiangVienProfile;
 
 export interface ApiResponse<T> {
   data?: T;

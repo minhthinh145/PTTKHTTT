@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using QLDangKyHocPhan.Contexts;
+using QLDangKyHocPhan.DTOs;
 using QLDangKyHocPhan.Helpers;
 using QLDangKyHocPhan.Models;
 using QLDangKyHocPhan.Repositories.Interface;
@@ -25,7 +26,8 @@ namespace QLDangKyHocPhan.Services.Implementation
             {
                 return ServiceResult.Failure("Giảng viên không tồn tại hoặc không có quyền truy cập thông tin này.");
             }
-            return ServiceResult.Success("success",data:giangVien);
+            var dto = _mapper.Map<GiangVienDTO>(giangVien);
+            return ServiceResult.Success("success",data: dto);
 
         }
 
@@ -36,8 +38,20 @@ namespace QLDangKyHocPhan.Services.Implementation
             {
                 return ServiceResult.Failure("Không tìm thấy lớp học phần cho giảng viên này.");
             }
-            return ServiceResult.Success("Lấy danh sách lớp học phần thành công.", data: lopHocPhans);
+            var dto = _mapper.Map<List<LopHocPhanDTO>>(lopHocPhans);
+            return ServiceResult.Success("Lấy danh sách lớp học phần thành công.", data: dto);
 
         }
+
+        public async Task<ServiceResult> GetSinhVienByMaLopHocPhanAsync(string maLopHocPhan)
+        {
+            var sinhViens = await _repo.GetSinhViensByMaLopHocPhanAsync(maLopHocPhan);
+            if (sinhViens == null || sinhViens.Count == 0)
+                return ServiceResult.Failure("Không tìm thấy sinh viên nào trong lớp học phần này.");
+
+            var dto = _mapper.Map<List<SinhVienDTO>>(sinhViens);
+            return ServiceResult.Success("Lấy danh sách sinh viên thành công.", data: dto);
+        }
+
     }
 }

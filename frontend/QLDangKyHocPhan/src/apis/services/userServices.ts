@@ -1,5 +1,6 @@
 import axiosInstance from "../axiosConfig";
-import type { User, ApiResponse } from "../types/user";
+import type { SinhVienProfile, ApiResponse } from "../types/user";
+import type { GiangVienProfile } from "../types/giangvien";
 
 // Định nghĩa type cho response từ API
 interface ServiceResult<T> {
@@ -10,9 +11,9 @@ interface ServiceResult<T> {
 
 export const getProfile = async (
   accessToken: string
-): Promise<ApiResponse<User>> => {
+): Promise<ApiResponse<SinhVienProfile>> => {
   try {
-    const response = await axiosInstance.get<ServiceResult<User>>(
+    const response = await axiosInstance.get<ServiceResult<SinhVienProfile>>(
       "/api/auth/profile",
       {
         headers: {
@@ -30,6 +31,35 @@ export const getProfile = async (
     return {
       status: error.response?.status || 500,
       message: error.response?.data?.message || "Failed to get profile",
+    };
+  }
+};
+
+export const getGiangVienProfile = async (
+  accessToken: string
+): Promise<ApiResponse<GiangVienProfile>> => {
+  try {
+    const response = await axiosInstance.get<ServiceResult<GiangVienProfile>>(
+      "/api/auth/profile",
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      }
+    );
+
+    return {
+      data: response.data.data,
+      status: response.status,
+      isSuccess: response.status >= 200 && response.status < 300,
+    };
+  } catch (error: any) {
+    console.error("getGiangVienProfile error:", error.response?.data || error);
+    return {
+      status: error.response?.status || 500,
+      message:
+        error.response?.data?.message || "Không thể lấy thông tin giảng viên",
+      isSuccess: false,
     };
   }
 };

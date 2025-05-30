@@ -26,10 +26,25 @@ namespace QLDangKyHocPhan.Repositories.Implementation
         public async Task<List<Lophocphan>> GetLopHocPhanByMaGiangVienAsync(string maGiangVien)
         {
             var lopHocPhanList = await _context.Lophocphans
-     .Include(lhp => lhp.MaGiangVienNavigation)  // đúng: Include navigation property
-     .Where(lhp => lhp.MaGiangVien == maGiangVien)
-     .ToListAsync();
+                .Include(lhp => lhp.MaGiangVienNavigation)
+                .Include(lhp => lhp.Hocphan) // Thêm dòng này để include thông tin học phần
+                .Where(lhp => lhp.MaGiangVien == maGiangVien)
+                .ToListAsync();
             return lopHocPhanList;
         }
+        public async Task<List<Sinhvien>> GetSinhViensByMaLopHocPhanAsync(string maLopHocPhan)
+        {
+            return await _context.HocPhanDangKys
+                .Where(x => x.MaLopHocPhan == maLopHocPhan)
+                .Include(x => x.SinhVien)
+                    .ThenInclude(sv => sv.MaKhoaNavigation)
+                .Include(x => x.SinhVien)
+                    .ThenInclude(sv => sv.CTDaoTao)
+                .Select(x => x.SinhVien)
+                .Distinct()
+                .ToListAsync();
+        }
+
+
     }
 }

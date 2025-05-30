@@ -1,5 +1,4 @@
 import axiosInstance from "../axiosConfig";
-import type { LopHocPhanDTO } from "../types/lopHocPhan";
 import type { ApiResponse } from "../types/lopHocPhan";
 import type { DangKyDTO } from "../types/lopHocPhan";
 
