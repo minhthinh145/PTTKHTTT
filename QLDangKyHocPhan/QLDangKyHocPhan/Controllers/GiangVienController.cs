@@ -34,6 +34,6 @@ namespace QLDangKyHocPhan.Controllers
             var result = await _giangVienService.GetSinhVienByMaLopHocPhanAsync(req.MaLopHocPhan);
             return Ok(result);
         }
-
+        
     }
 }

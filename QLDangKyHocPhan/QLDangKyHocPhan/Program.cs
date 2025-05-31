@@ -13,6 +13,7 @@ using QLDangKyHocPhan.Repositories.Implementation;
 using QLDangKyHocPhan.Repositories.Interface;
 using QLDangKyHocPhan.Services.Implementation;
 using QLDangKyHocPhan.Services.Interface;
+using QLDangKyHocPhan.Services.SendEmail;
 using System.Text;
 using System.Text.Json;
 
@@ -109,6 +110,7 @@ try
     builder.Services.AddScoped<IDangKyHocPhanService, DangKyHocPhanService>();
     builder.Services.AddScoped<IHocPhanDangKyService, HocPhanDangKyService>();
     builder.Services.AddScoped<IGiangVienService, GiangVienService>();
+    builder.Services.AddScoped<ISendEmail, SendEmailService>();
 
 
 
@@ -122,6 +124,7 @@ try
     builder.Services.AddScoped<IHocPhanRepository, HocPhanRepository>();
     builder.Services.AddScoped<IHocPhanDangKyRepository, HocPhanDangKyRepository>();
     builder.Services.AddScoped<IGiangVienRepository, GiangVienRepository>();
+
 
 
 

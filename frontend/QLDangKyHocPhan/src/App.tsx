@@ -8,6 +8,7 @@ import GiangVienPage from "./pages/GiangVienPage";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { GiangVienDanhSachSinhVien } from "./components/GiangVienPage/GiangVienDanhSachSinhVien";
+import PhongDaoTaoPage from "./pages/PhongDaoTaoPage";
 
 function App() {
   return (
@@ -20,6 +21,8 @@ function App() {
           <Route path="/HomePage" element={<HomePage />} />
           <Route path="/SinhVien/Home" element={<HomePage />} />
           <Route path="/GiangVien/Home" element={<GiangVienPage />} />
+          <Route path="/phongdaotao" element={<PhongDaoTaoPage />} />
+
           <Route
             path="/giangvien/lophocphan/:maLopHocPhan"
             element={<GiangVienDanhSachSinhVien />}

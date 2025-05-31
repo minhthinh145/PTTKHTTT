@@ -5,6 +5,7 @@ import type { HocPhanDTO } from "../../apis/types/HocPhan";
 import CourseCard from "./RegisterTab/CourseList";
 import { useDangKyHocPhan } from "../../hooks/SinhVien/DKHP/useDangKyHocPhan";
 import { useHuyDangKyHocPhan } from "../../hooks/SinhVien/DKHP/useHuyDangKyHocPhan"; // import hook hủy đăng ký
+import { toast } from "react-toastify";
 import type {
   RequestChuyenLopHocPhanDTO,
   RequestDangKyDTO,
@@ -63,16 +64,15 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
   // Xử lý chuyển lớp học phần
   const handleChuyenLop = async (request: RequestChuyenLopHocPhanDTO) => {
     try {
-      const result = await chuyenLop(request); // ✅ Truyền đúng 1 object
-
+      const result = await chuyenLop(request);
       if (result.isSuccess) {
-        console.log("Chuyển lớp thành công:", result.data);
-        await refreshAll(); // Làm mới cả 2 danh sách
+        toast.success("Chuyển lớp thành công!");
+        await refreshAll();
       } else {
-        console.log("Chuyển lớp thất bại:", result.message);
+        toast.error(result.message || "Chuyển lớp thất bại!");
       }
     } catch (err) {
-      console.error("Lỗi khi chuyển lớp:", err);
+      toast.error("Lỗi khi chuyển lớp!");
     }
   };
 
@@ -82,13 +82,13 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
     try {
       const result = await dangKy(dangKyData);
       if (result.isSuccess) {
-        console.log("Đăng ký thành công:", result.data);
-        await refreshAll(); // Làm mới cả 2 danh sách
+        toast.success("Đăng ký thành công!");
+        await refreshAll();
       } else {
-        console.log("Đăng ký thất bại:", result.message);
+        toast.error(result.message || "Đăng ký thất bại!");
       }
     } catch (err) {
-      console.error("Lỗi khi đăng ký:", err);
+      toast.error("Lỗi khi đăng ký!");
     }
   };
 
@@ -98,15 +98,13 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
     try {
       const result = await huyDangKy(huyData);
       if (result.isSuccess) {
-        console.log("Hủy đăng ký thành công:", result.data);
-        // refreshAll() đã được gọi trong hook useHuyDangKyHocPhan rồi,
-        // nhưng gọi lại ở đây cũng được nếu muốn đảm bảo
+        toast.success("Hủy đăng ký thành công!");
         await refreshAll();
       } else {
-        console.log("Hủy đăng ký thất bại:", result.message);
+        toast.error(result.message || "Hủy đăng ký thất bại!");
       }
     } catch (err) {
-      console.error("Lỗi khi hủy đăng ký:", err);
+      toast.error("Lỗi khi hủy đăng ký!");
     }
   };
   return (
@@ -114,18 +112,37 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
       <h2 className="text-2xl font-bold mb-4">ĐĂNG KÝ HỌC PHẦN</h2>
       <div className="bg-white rounded shadow p-6">
         <div className="flex items-center gap-4 mb-4">
-          <select className="border p-2 rounded w-64 cursor-pointer">
-            <option>Chương trình đào tạo</option>
+          <select className="border p-2 rounded w-64 cursor-pointer hover:border-blue-400 transition">
+            <option>{user?.tenCTDT}</option>
           </select>
-          <button className="bg-blue-700 text-white hover:bg-blue-500 transition-colors duration-200 px-4 py-2 rounded cursor-pointer">
+          <button
+            className="bg-blue-700 text-white hover:bg-blue-500 active:scale-95 transition-all duration-150 px-4 py-2 rounded cursor-pointer flex items-center gap-2"
+            onClick={refreshAll}
+            disabled={loading || loadingDaDangKy}
+            title="Làm mới danh sách"
+          >
+            {(loading || loadingDaDangKy) && (
+              <svg className="animate-spin h-5 w-5 mr-1" viewBox="0 0 24 24">
+                <circle
+                  className="opacity-25"
+                  cx="12"
+                  cy="12"
+                  r="10"
+                  stroke="currentColor"
+                  strokeWidth="4"
+                ></circle>
+                <path
+                  className="opacity-75"
+                  fill="currentColor"
+                  d="M4 12a8 8 0 018-8v8z"
+                ></path>
+              </svg>
+            )}
             Làm mới
           </button>
         </div>
       </div>
       <div className="bg-white rounded-lg shadow-lg p-6 flex flex-col gap-8">
-        {/* Các phần UI khác như chọn chương trình đào tạo, nhóm môn, danh sách học phần chưa đăng ký ... */}
-
-        {/* Danh sách học phần chưa đăng ký */}
         {/* Danh sách học phần chưa đăng ký */}
         <div className="mt-8 border border-blue-300 rounded-lg bg-white p-5">
           <h3 className="text-lg font-semibold mb-3 text-blue-700 flex items-center gap-2">
@@ -178,7 +195,11 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
             ) : (
               <ul className="space-y-4">
                 {hocPhanChuaDangKy.map((hp) => (
-                  <li key={hp.maHocPhan}>
+                  <li
+                    key={hp.maHocPhan}
+                    className="hover:bg-blue-50 rounded transition cursor-pointer"
+                    title="Nhấn để đăng ký học phần này"
+                  >
                     <CourseCard
                       tenHocPhan={hp.tenHocPhan ?? "Không có tên học phần"}
                       maHocPhan={hp.maHocPhan}

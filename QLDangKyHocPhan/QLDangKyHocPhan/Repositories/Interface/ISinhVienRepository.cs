@@ -5,5 +5,6 @@ namespace QLDangKyHocPhan.Repositories.Interface
     public interface ISinhVienRepository
     {
         Task<Sinhvien> GetSinhvienByIdAsync(string id);
+        Task AddSinhVienAsync(Sinhvien sinhvien);
     }
 }

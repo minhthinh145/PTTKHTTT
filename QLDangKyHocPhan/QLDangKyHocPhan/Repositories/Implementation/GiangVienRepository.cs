@@ -32,6 +32,7 @@ namespace QLDangKyHocPhan.Repositories.Implementation
                 .ToListAsync();
             return lopHocPhanList;
         }
+
         public async Task<List<Sinhvien>> GetSinhViensByMaLopHocPhanAsync(string maLopHocPhan)
         {
             return await _context.HocPhanDangKys

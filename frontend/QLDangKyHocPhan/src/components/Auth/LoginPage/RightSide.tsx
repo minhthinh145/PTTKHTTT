@@ -17,11 +17,13 @@ export const RightSide = () => {
   const handleLogin = async () => {
     const result = await signIn({ tenDangNhap: username, password });
     console.log("SignIn result:", result);
-
     if (result.status === 200 && result.data) {
       const { accessToken, refreshToken, loaiTaiKhoan } = result.data;
+      console.log("loaiTaiKhoan:", loaiTaiKhoan);
       await login(username, accessToken, refreshToken);
+
       toast.success("Đăng nhập thành công!");
+
       //chờ khoảng 1s
 
       // ✅ Điều hướng theo loại tài khoản
@@ -32,8 +34,9 @@ export const RightSide = () => {
         case "GiangVien":
           navigate("/GiangVien/Home");
           break;
-        case "Admin":
-          navigate("/Admin/Dashboard");
+        case "PhongDaoTao":
+          navigate("/phongdaotao");
+
           break;
         default:
           navigate("/HomePage"); // fallback
@@ -45,12 +48,11 @@ export const RightSide = () => {
 
   return (
     <div className="flex-1 flex flex-col bg-[#effafd] px-10 py-6 my-auto">
-      {/* Header trên cùng */}
+      {/* Header trên cùng */} ``
       <div className="mb-6 text-center">
         <h2 className="text-xl ">TRƯỜNG ĐẠI HỌC ABCD</h2>
         <p className="text-2xl font-bold">CỔNG ĐĂNG KÝ HỌC PHẦN</p>
       </div>
-
       {/* Phần form, bọc trong div bg trắng, bo góc, padding */}
       <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-auto shadow-md border border-gray-50">
         <div className="mb-6 text-center">

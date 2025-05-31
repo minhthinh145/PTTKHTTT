@@ -17,14 +17,16 @@ namespace QLDangKyHocPhan.Services.Implementation
         private readonly IAuthService _authService;
         private readonly ISinhVienService _sinhVien;
         private readonly IGiangVienService _giangVien;
+        private readonly IAccountRepository _accountRepo;
 
-        public AccountService(UserManager<Taikhoan> userManager, IMapper mapper, IAuthService authService, ISinhVienService sinhVien, IGiangVienService giangvien)
+        public AccountService(UserManager<Taikhoan> userManager, IMapper mapper, IAuthService authService, ISinhVienService sinhVien, IGiangVienService giangvien , IAccountRepository repo)
         {
             _userManager = userManager;
             _mapper = mapper;
             _authService = authService;
             _sinhVien = sinhVien;
             _giangVien = giangvien;
+            _accountRepo = repo;
         }
 
         public async Task<ServiceResult> CheckPasswordAsync(string userId, string password)
@@ -70,6 +72,15 @@ namespace QLDangKyHocPhan.Services.Implementation
                     return result;
                 }
 
+            }
+           if(userProfile.LoaiTaiKhoan == "PhongDaoTao")
+            {
+                var phongDaoTao = await _userManager.FindByIdAsync(userProfile.TenDangNhap)
+                      ?? await _userManager.FindByEmailAsync(userProfile.TenDangNhap);
+                if (phongDaoTao != null)
+                {
+                    return ServiceResult.Success("Thành công", _mapper.Map<PhongDaoTaoDTO>(phongDaoTao));
+                }
             }
             return ServiceResult.Failure("Không tìm thấy thông tin người dùng");
         }
@@ -124,6 +135,15 @@ namespace QLDangKyHocPhan.Services.Implementation
             var result = await _userManager.UpdateAsync(userApp);
 
             return user;
+        }
+        public async Task<ServiceResult> GetUsersByRoleAsync(string role)
+        {
+            var users = await _accountRepo.GetUsersByRoleAsync(role);
+            if (users == null || users.Count == 0)
+                return ServiceResult.Failure("Không tìm thấy người dùng với vai trò này.");
+
+            var dtos = users.Select(u => _mapper.Map<TaiKhoanDTO>(u)).ToList();
+            return ServiceResult.Success("Thành công", dtos);
         }
     }
 }

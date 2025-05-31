@@ -42,7 +42,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
           {loading && <p className="text-gray-500">Đang tải lớp học phần...</p>}
           {error && <p className="text-red-600">{error}</p>}
           {!loading && !error && (
-            <table className="w-full text-sm border-collapse mt-4">
+            <table className="w-full text-sm border-collapse mt-4 text-center">
               <thead className="bg-gray-100 text-gray-800">
                 <tr>
                   <th className="px-4 py-2 border-b-2 border-gray-300">#</th>

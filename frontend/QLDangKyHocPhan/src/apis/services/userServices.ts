@@ -1,6 +1,7 @@
 import axiosInstance from "../axiosConfig";
 import type { SinhVienProfile, ApiResponse } from "../types/user";
 import type { GiangVienProfile } from "../types/giangvien";
+import type { PhongDaoTaoProfile } from "../types/phongdaotao";
 
 // Định nghĩa type cho response từ API
 interface ServiceResult<T> {
@@ -60,6 +61,30 @@ export const getGiangVienProfile = async (
       message:
         error.response?.data?.message || "Không thể lấy thông tin giảng viên",
       isSuccess: false,
+    };
+  }
+};
+
+export const getPhongDaoTaoProfile = async (
+  token: string
+): Promise<ApiResponse<PhongDaoTaoProfile>> => {
+  try {
+    const response = await axiosInstance.get<PhongDaoTaoProfile>(
+      "/api/auth/profile",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return {
+      data: response.data,
+      status: response.status,
+    };
+  } catch (error: any) {
+    return {
+      status: error.response?.status || 500,
+      message: error.response?.data?.message || "Failed to get profile",
     };
   }
 };

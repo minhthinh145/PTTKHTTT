@@ -27,3 +27,8 @@ export interface ErrorResponse {
 export interface SignOutRequestDTO {
   RefreshToken: string; // chữ hoa R và T như backend
 }
+
+export interface UpdatePasswordRequest {
+  maSinhVien: string;
+  newPassword: string;
+}

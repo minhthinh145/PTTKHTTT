@@ -11,26 +11,8 @@ const HistoryTabContent: React.FC = () => {
     <>
       <h2 className="text-2xl font-bold mb-4">LỊCH SỬ ĐĂNG KÝ HỌC PHẦN</h2>
       <div className="bg-white p-6 rounded shadow">
-        <div className="flex flex-wrap gap-4 mb-4">
-          <select className="border px-4 py-2 rounded w-60 cursor-pointer">
-            <option>Năm học</option>
-            {/* Add dynamic options if API available */}
-          </select>
-          <select className="border px-4 py-2 rounded w-60 cursor-pointer">
-            <option>Học kỳ</option>
-            {/* Add dynamic options if API available */}
-          </select>
-          <button
-            className="cursor-pointer bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-blue-400"
-            onClick={refresh}
-            disabled={loading}
-          >
-            {loading ? "Đang tải..." : "Tìm kiếm"}
-          </button>
-        </div>
-
         <div className="overflow-auto rounded border border-gray-300 text-center">
-          <table className="min-w-full text-sm text-left">
+          <table className="min-w-full text-sm text-center">
             <thead className="bg-[#053C65] text-white">
               <tr>
                 <th className="px-4 py-2">STT</th>

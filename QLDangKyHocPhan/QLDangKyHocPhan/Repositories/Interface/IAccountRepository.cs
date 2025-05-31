@@ -79,5 +79,14 @@ namespace QLDangKyHocPhan.Repositories.Interface
         /// Một <see cref="Task"/> đại diện cho quá trình thực hiện.
         /// </returns>
         Task AddToRoleAsync(Taikhoan user, string role);
+        
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="role"></param>
+        /// <returns></returns>
+        Task<List<Taikhoan>> GetUsersByRoleAsync(string role);
+
     }
 }

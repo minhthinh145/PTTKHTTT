@@ -60,5 +60,8 @@ namespace QLDangKyHocPhan.Services.Interface
         /// <param name="password">Password to verify</param>
         /// <returns>True if correct, false otherwise</returns>
         Task<ServiceResult> CheckPasswordAsync(string userId, string password);
+
+        Task<ServiceResult> GetUsersByRoleAsync(string role);
+
     }
 }

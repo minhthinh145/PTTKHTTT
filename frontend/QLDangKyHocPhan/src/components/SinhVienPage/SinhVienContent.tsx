@@ -25,6 +25,7 @@ const MainContent = ({
   reloadProfile,
 }: Props) => {
   const renderContent = () => {
+    console.log("user:", user);
     switch (activeTab) {
       case "register":
         return (
@@ -35,7 +36,7 @@ const MainContent = ({
           />
         );
       case "enroll":
-        return <EnrollTabContent />;
+        return <EnrollTabContent user={user} />;
       case "search":
         return <SearchTabContent lopHocPhan={lopHocPhan} />;
       case "history":

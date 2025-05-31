@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DocumentFormat.OpenXml.InkML;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using QLDangKyHocPhan.Contexts;
 using QLDangKyHocPhan.Models;
 using QLDangKyHocPhan.Repositories.Interface;
 
@@ -8,12 +11,30 @@ namespace QLDangKyHocPhan.Repositories.Implementation
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<Taikhoan> _userManager;
+        private readonly QlDangKyHocPhanContext _context;
 
-        public AccountRepository(UserManager<Taikhoan> userManager , RoleManager<IdentityRole> roleManager)
+        public AccountRepository(UserManager<Taikhoan> userManager , RoleManager<IdentityRole> roleManager, QlDangKyHocPhanContext context)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _context = context;
+
         }
+
+        public async Task<List<Taikhoan>> GetUsersByRoleAsync(string role)
+        {
+            {
+                return await _context.Users
+                    .Where(u => u.LoaiTaiKhoan == role)
+                    .Include(u => u.Sinhvien)
+                        .ThenInclude(sv => sv.MaKhoaNavigation)
+                    .Include(u => u.Sinhvien)
+                        .ThenInclude(sv => sv.CTDaoTao)
+                    .Include(u => u.Giangvien)
+                    .ToListAsync();
+            }
+        }
+
         public async Task AddToRoleAsync(Taikhoan user, string role)
         {
             await _userManager.AddToRoleAsync(user, role);

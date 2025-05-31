@@ -22,7 +22,7 @@ const HocPhanDaDangKyTable: React.FC<HocPhanDaDangKyTableProps> = ({
 
   return (
     <div>
-      <table className="w-full text-sm border-collapse">
+      <table className="w-full text-sm border-collapse text-center">
         <thead className="bg-gray-100 text-gray-800">
           <tr>
             <th className="px-4 py-2 border-b-2 border-gray-300">#</th>

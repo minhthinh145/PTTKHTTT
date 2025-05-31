@@ -10,7 +10,7 @@ const SidebarSV = ({ activeTab, setActiveTab, user }: Props) => {
   const sinhVienNavItems = [
     { key: "register", label: "📘 Đăng ký học phần" },
     { key: "enroll", label: "📝 Đăng ký ghi danh" },
-    { key: "search", label: "🔍 Tra cứu học phần" },
+    { key: "search", label: "🔍 Tra cứu danh sách lớp học phần" },
     { key: "history", label: "📅 Lịch sử đăng ký học phần" },
   ];
 
