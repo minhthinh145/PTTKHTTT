@@ -12,6 +12,7 @@ import type { SinhVienProfile } from "../../../apis/types/user";
 import { useGetLopHocPhanDaDangKy } from "../../../hooks/SinhVien/HocPhan/useGetLopHocPhanDaDangKy";
 import HocPhanDaDangKyTable from "../../SinhVienPage/RegisterTab/HocPhanDaDangKyTable";
 import { useChuyenLopHocPhan } from "../../../hooks/SinhVien/DKHP/useChuyenLopHocPhan";
+import { toast } from "react-toastify";
 
 interface Props {
   ctdt: CTDAOTAO | null;
@@ -65,10 +66,10 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
       const result = await chuyenLop(request);
 
       if (result.isSuccess) {
-        console.log("Chuyển lớp thành công:", result.data);
+        toast.success("Chuyển lớp thành công!");
         await refreshAll(); // Làm mới cả 2 danh sách
       } else {
-        console.log("Chuyển lớp thất bại:", result.message);
+        toast.error("Chuyển lớp không thành công: " + result.message);
       }
     } catch (err) {
       console.error("Lỗi khi chuyển lớp:", err);
@@ -81,10 +82,8 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
     try {
       const result = await dangKy(dangKyData);
       if (result.isSuccess) {
-        console.log("Đăng ký thành công:", result.data);
         await refreshAll(); // Làm mới cả 2 danh sách
       } else {
-        console.log("Đăng ký thất bại:", result.message);
       }
     } catch (err) {
       console.error("Lỗi khi đăng ký:", err);
@@ -97,16 +96,13 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
     try {
       const result = await huyDangKy(huyData);
       if (result.isSuccess) {
-        console.log("Hủy đăng ký thành công:", result.data);
-        // refreshAll() đã được gọi trong hook useHuyDangKyHocPhan rồi,
-        // nhưng gọi lại ở đây cũng được nếu muốn đảm bảo
+        toast.success("Hủy đăng ký thành công!");
+        // refreshAll() đã được gọi trong hook useHuyDangKyHocPhan rồi
         await refreshAll();
       } else {
-        console.log("Hủy đăng ký thất bại:", result.message);
+        toast.error("Hủy đăng ký không thành công: " + result.message);
       }
-    } catch (err) {
-      console.error("Lỗi khi hủy đăng ký:", err);
-    }
+    } catch (err) {}
   };
   return (
     <>

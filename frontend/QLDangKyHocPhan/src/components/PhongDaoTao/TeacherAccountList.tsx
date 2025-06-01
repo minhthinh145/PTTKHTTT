@@ -11,7 +11,6 @@ const TeacherAccountList = () => {
     getAccountsByRole("GiangVien").then((data) => {
       setAccounts(Array.isArray(data) ? data : []);
       setLoading(false);
-      console.log("GiangVien accounts:", data);
     });
   }, []);
 

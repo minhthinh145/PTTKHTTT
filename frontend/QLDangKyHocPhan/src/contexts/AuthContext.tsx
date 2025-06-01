@@ -83,8 +83,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     let token = accessToken || localStorage.getItem("accessToken");
     let rToken = refreshToken || localStorage.getItem("refreshToken");
 
-    console.log("getValidToken called, tokens:", { token, rToken });
-
     if (!token || !rToken) {
       console.warn("No accessToken or refreshToken available");
       return null;
@@ -110,7 +108,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         throw new Error(refreshResponse.message || "Failed to refresh token");
       }
     } catch (err) {
-      console.error("getValidToken error:", err);
       await logout();
       return null;
     }
@@ -133,7 +130,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       await loadUserProfile(newAccessToken);
     } catch (err) {
-      console.error("Login error:", err);
       await logout();
     }
   };
@@ -142,9 +138,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     if (refreshToken) {
       try {
         await signOut(refreshToken);
-      } catch (err) {
-        console.error("Error during logout:", err);
-      }
+      } catch (err) {}
     }
 
     setUser(null);

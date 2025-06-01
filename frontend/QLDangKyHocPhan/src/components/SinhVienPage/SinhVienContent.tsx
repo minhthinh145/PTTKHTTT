@@ -25,7 +25,6 @@ const MainContent = ({
   reloadProfile,
 }: Props) => {
   const renderContent = () => {
-    console.log("user:", user);
     switch (activeTab) {
       case "register":
         return (
