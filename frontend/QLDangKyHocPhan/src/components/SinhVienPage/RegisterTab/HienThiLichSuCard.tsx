@@ -16,6 +16,7 @@ export const HienThiLichSuCard: React.FC<HienThiLopCardProps> = ({
       </tr>
     );
   }
+  console;
 
   return (
     <>
@@ -32,7 +33,7 @@ export const HienThiLichSuCard: React.FC<HienThiLopCardProps> = ({
             {item.tenHocPhan || "-"}
           </td>
           <td className="px-4 py-2 border border-gray-300">
-            {item.loaiDangKy === "Đăng ký" ? "Đăng ký" : "Hủy đăng ký"}
+            {item.loaiDangKy}
           </td>
           <td className="px-4 py-2 border border-gray-300">
             {item.ngayThucHien

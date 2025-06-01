@@ -66,7 +66,6 @@ const RegisterTabContent = ({ ctdt, user }: Props) => {
     try {
       const result = await chuyenLop(request);
       if (result.isSuccess) {
-        toast.success("Chuyển lớp thành công!");
         await refreshAll();
       } else {
         toast.error(result.message || "Chuyển lớp thất bại!");

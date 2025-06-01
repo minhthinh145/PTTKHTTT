@@ -46,9 +46,7 @@ const MainContent = ({
   };
 
   return (
-    <main className="p-6 bg-gray-100 flex-1 h-screen overflow-y-auto">
-      {renderContent()}
-    </main>
+    <main className="p-6 bg-gray-100 flex-1 h-screen">{renderContent()}</main>
   );
 };
 

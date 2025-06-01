@@ -11,9 +11,9 @@ const HistoryTabContent: React.FC = () => {
     <>
       <h2 className="text-2xl font-bold mb-4">LỊCH SỬ ĐĂNG KÝ HỌC PHẦN</h2>
       <div className="bg-white p-6 rounded shadow">
-        <div className="overflow-auto rounded border border-gray-300 text-center">
+        <div className="overflow-auto rounded border border-gray-300 text-center max-h-screen">
           <table className="min-w-full text-sm text-center">
-            <thead className="bg-[#053C65] text-white">
+            <thead className="bg-[#053C65] text-white sticky top-0">
               <tr>
                 <th className="px-4 py-2">STT</th>
                 <th className="px-4 py-2">Mã HP</th>

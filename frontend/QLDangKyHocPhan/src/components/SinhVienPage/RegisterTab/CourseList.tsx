@@ -28,7 +28,7 @@ const CourseCard: React.FC<CourseCardProps> = ({
         <h3 className="font-semibold text-xl text-gray-900">{tenHocPhan}</h3>
         <button
           aria-label={expanded ? "Thu gọn" : "Mở rộng"}
-          className="text-blue-600 transform transition-transform duration-200"
+          className="text-blue-600 transform transition-transform duration-200 cursor-pointer hover:text-blue-800 focus:outline-none"
         >
           <IoChevronForward
             className="w-6 h-6"

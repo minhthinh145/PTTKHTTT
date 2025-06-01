@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import {
   updatePassword,
   getSinhVienByMa,
 } from "../../apis/services/sinhVienService";
 import type { UpdatePasswordRequest } from "../../apis/types/auth";
 import type { SinhVienProfile } from "../../apis/types/user";
+import debounce from "lodash.debounce";
 
 const DoiMatKhauSinhVien = () => {
   const [form, setForm] = useState<UpdatePasswordRequest>({
@@ -16,23 +17,26 @@ const DoiMatKhauSinhVien = () => {
   const [sinhVien, setSinhVien] = useState<SinhVienProfile | null>(null);
   const [svError, setSvError] = useState<string | null>(null);
 
-  const handleMaSinhVienBlur = async () => {
-    setSinhVien(null);
-    setSvError(null);
-    if (!form.maSinhVien) return;
-    const res = await getSinhVienByMa(form.maSinhVien);
-    if (res.isSuccess && res.data) {
-      setSinhVien(res.data);
-    } else {
-      setSvError(res.message || "Không tìm thấy sinh viên này.");
-    }
-  };
+  // Dùng useCallback để giữ debounce instance giữa các lần render
+  const fetchSinhVien = useCallback(
+    debounce(async (maSinhVien: string) => {
+      setSinhVien(null);
+      setSvError(null);
+      if (!maSinhVien) return;
+      const res = await getSinhVienByMa(maSinhVien);
+      if (res.isSuccess && res.data) {
+        setSinhVien(res.data);
+      } else {
+        setSvError(res.message || "Không tìm thấy sinh viên này.");
+      }
+    }, 500),
+    []
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     if (e.target.name === "maSinhVien") {
-      setSinhVien(null);
-      setSvError(null);
+      fetchSinhVien(e.target.value);
     }
   };
 
@@ -70,7 +74,6 @@ const DoiMatKhauSinhVien = () => {
           name="maSinhVien"
           value={form.maSinhVien}
           onChange={handleChange}
-          onBlur={handleMaSinhVienBlur}
           className="border border-blue-300 px-4 py-2 rounded-lg w-full focus:ring-2 focus:ring-blue-400 outline-none transition"
           required
           placeholder="Nhập mã sinh viên..."
@@ -132,7 +135,7 @@ const DoiMatKhauSinhVien = () => {
       </div>
       <button
         type="submit"
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold text-lg transition disabled:opacity-60"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold text-lg transition disabled:opacity-60 cursor-pointer"
         disabled={loading || !sinhVien}
       >
         {loading ? "Đang cập nhật..." : "Đổi mật khẩu"}

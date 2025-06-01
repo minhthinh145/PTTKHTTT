@@ -19,7 +19,7 @@ export interface DangKyDTO {
   maLopHP: string;
   tenHocPhan: string;
   ngayThucHien: string; // ISO string
-  loaiDangKy: string; // "Đăng ký" | "Hủy đăng ký"
+  loaiDangKy: string; // "Đăng ký" | "Hủy đăng ký" |
 }
 
 export interface ApiResponse<T> {
